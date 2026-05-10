@@ -1,5 +1,5 @@
-DE is bloat use vim, lynx and tmux.
-
-
+<div align="center">
 
 ![Stats](https://researchweb.iiit.ac.in/~gopal.kataria/cgi-bin/stats.py)
+
+</div>
