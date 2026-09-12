@@ -1,0 +1,45 @@
+name: Refresh README
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Refresh README
+        env:
+          GITHUB_USERNAME: ${{ vars.GITHUB_USERNAME }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          python scripts/refresh_readme.py
+
+      - name: Commit README
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+
+          if git diff --cached --quiet; then
+            echo "README unchanged"
+            exit 0
+          fi
+
+          git commit -m "chore: refresh README"
+          git push
