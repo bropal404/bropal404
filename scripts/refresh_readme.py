@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from urllib.request import Request, urlopen
 
 
-USERNAME = os.environ["G_USERNAME"]
+USERNAME = "bropal404"
 TOKEN = os.environ["GH_PAT"]
 
 README = "README.md"
