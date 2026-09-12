@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from urllib.request import Request, urlopen
 
 
-USERNAME = "bropal404"
+USERNAME = os.environ["GITHUB_USERNAME"]
 TOKEN = os.environ["GH_PAT"]
 
 README = "README.md"
@@ -195,7 +195,6 @@ def get_contribution_streak():
 
     counts = [day["contributionCount"] for day in days]
 
-    current = 0
     longest = 0
     streak = 0
 
@@ -206,7 +205,6 @@ def get_contribution_streak():
         else:
             streak = 0
 
-    # Current streak: walk backwards from today.
     current = 0
 
     for day in reversed(days):
@@ -236,9 +234,7 @@ def main():
 
     output = {
         "status": get_status(now.hour),
-
         "weather": get_weather(),
-
         "github": {
             "top_languages": languages,
             "latest_active_repo": latest_repo,
@@ -246,19 +242,20 @@ def main():
             "current_streak": current_streak,
             "longest_streak": longest_streak,
         },
-
         "updated": now.isoformat(),
     }
 
     with open(README, "w", encoding="utf-8") as f:
+        f.write("```json\n")
         json.dump(
             output,
             f,
             indent=2,
             ensure_ascii=False,
         )
-        f.write("\n")
+        f.write("\n```\n")
 
 
 if __name__ == "__main__":
     main()
+    
