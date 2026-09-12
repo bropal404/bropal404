@@ -2,7 +2,7 @@ name: Refresh README
 
 on:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "43 */3 * * *"
 
   workflow_dispatch:
 
