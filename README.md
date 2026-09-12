@@ -1,10 +1,22 @@
-<div align="center">
-
-
-
-![https://researchweb.iiit.ac.in/~gopal.kataria/cgi-bin/stats.py](https://raw.githubusercontent.com/bropal404/github-stats/refs/heads/main/new.svg)
-
-[![Website](https://img.shields.io/badge/personal_page-8b0000?style=for-the-badge&logoColor=ff6b6b)](https://researchweb.iiit.ac.in/~gopal.kataria)
-[![LinkedIn](https://img.shields.io/badge/linkedin-0a66c2?style=for-the-badge)](https://linkedin.com/in/gopalkataria)
-[![EMAIL](https://img.shields.io/badge/EMAIL-0ac266?style=for-the-badge)](mailto:gopal.kataria@research.iiit.ac.in)
-</div>
+{
+  "status": "biriyani time",
+  "weather": {
+    "location": "Hyderabad",
+    "temperature": "22°C",
+    "condition": "Overcast "
+  },
+  "github": {
+    "top_languages": [
+      "Jupyter Notebook",
+      "Python",
+      "C",
+      "TypeScript",
+      "HTML"
+    ],
+    "latest_active_repo": "bropal404",
+    "last_commit": "2026-09-12T07:01:04Z",
+    "current_streak": 1,
+    "longest_streak": 12
+  },
+  "updated": "2026-09-12T12:32:21.357250+05:30"
+}
