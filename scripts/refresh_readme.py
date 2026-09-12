@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from urllib.request import Request, urlopen
 
 
-USERNAME = os.environ["GITHUB_USERNAME"]
+USERNAME = os.environ["G_USERNAME"]
 TOKEN = os.environ["GH_PAT"]
 
 README = "README.md"
