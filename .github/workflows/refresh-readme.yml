@@ -2,10 +2,7 @@ name: Refresh README
 
 on:
   schedule:
-    - cron: "43 */3 * * *"
-
-  workflow_dispatch:
-
+    - cron: "*/6 * * * *"
 permissions:
   contents: write
 
