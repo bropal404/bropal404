@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "late night coffee",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "21°C",
-    "condition": "Patchy rain nearby"
+    "temperature": "28°C",
+    "condition": "Partly Cloudy "
   },
   "github": {
     "top_languages": [
@@ -15,10 +15,10 @@
       "HTML"
     ],
     "latest_active_repo": "bropal404",
-    "last_commit": "2026-09-12T20:25:43Z",
+    "last_commit": "2026-09-12T22:55:49Z",
     "current_streak": 0,
     "longest_streak": 12
   },
-  "updated": "2026-09-13T04:25:37.680209+05:30"
+  "updated": "2026-09-13T16:10:18.504304+05:30"
 }
 ```
