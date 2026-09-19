@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
     "temperature": "27°C",
-    "condition": "Light rain shower"
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -16,7 +16,7 @@
     ],
     "latest_active_repo": "FLIPKART_GRIDLOCK_8.0_DASHBOARD",
     "last_commit": "2026-06-23T19:08:39Z",
-    "current_streak": 1,
+    "current_streak": 0,
     "longest_streak": 12,
     "contributions_this_year": 222,
     "total_repos": 42,
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-09-19 21:52 IST"
+  "updated": "2026-09-20 00:47 IST"
 }
 ```
