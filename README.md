@@ -3,8 +3,8 @@
   "status": "good morning, time to ship",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "26°C",
-    "condition": "Light rain shower"
+    "temperature": "28°C",
+    "condition": "Patchy rain nearby"
   },
   "github": {
     "top_languages": [
@@ -14,11 +14,18 @@
       "TypeScript",
       "HTML"
     ],
-    "latest_active_repo": "bropal404",
-    "last_commit": "2026-09-18T23:09:12Z",
-    "current_streak": 0,
-    "longest_streak": 12
+    "latest_active_repo": "FLIPKART_GRIDLOCK_8.0_DASHBOARD",
+    "last_commit": "2026-06-23T19:08:39Z",
+    "current_streak": 1,
+    "longest_streak": 12,
+    "contributions_this_year": 221,
+    "total_repos": 42,
+    "total_stars": 7,
+    "most_starred_repo": {
+      "name": "bropal404",
+      "stars": 1
+    }
   },
-  "updated": "2026-09-19T09:41:00.643755+05:30"
+  "updated": "2026-09-19 11:50 IST"
 }
 ```
