@@ -12,6 +12,8 @@ TOKEN = os.environ["GH_PAT"]
 
 README = "README.md"
 
+PROFILE_REPO_NAME = USERNAME.lower()
+
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
@@ -54,15 +56,17 @@ def github_graphql(query, variables):
 
 
 def get_status(hour):
-    if 0 <= hour < 6:
-        return "late night coffee"
+    if 3 <= hour < 6:
+        return "am I dreaming"
     if 6 <= hour < 12:
         return "good morning, time to ship"
     if 12 <= hour < 15:
-        return "biriyani time"
-    if 15 <= hour < 19:
+        return "BIRIYANI TIME"
+    if 15 <= hour < 20 :
         return "debugging arc"
-    return "post nut clarity"
+    if 20 <= hour < :
+        return "Struggling with a deadline"
+    return "having a chai without sugar"
 
 
 def get_weather():
@@ -140,11 +144,18 @@ def get_languages(repos):
 
 
 def get_latest_repo_and_commit(repos):
-    if not repos:
+    # Exclude the profile repo itself so a README-only commit doesn't
+    # make this script perpetually report itself as "latest active".
+    candidates = [
+        repo for repo in repos
+        if repo["name"].lower() != PROFILE_REPO_NAME
+    ]
+
+    if not candidates:
         return None, None
 
     latest_repo = max(
-        repos,
+        candidates,
         key=lambda repo: repo.get("pushed_at") or "",
     )
 
@@ -163,12 +174,33 @@ def get_latest_repo_and_commit(repos):
     return latest_repo["name"], latest_repo.get("pushed_at")
 
 
-def get_contribution_streak():
+def get_repo_stats(repos):
+    """Total repo count, total stars, and the most-starred repo."""
+    total_stars = sum(repo.get("stargazers_count", 0) for repo in repos)
+
+    most_starred = None
+    if repos:
+        top = max(repos, key=lambda repo: repo.get("stargazers_count", 0))
+        if top.get("stargazers_count", 0) > 0:
+            most_starred = {
+                "name": top["name"],
+                "stars": top["stargazers_count"],
+            }
+
+    return {
+        "total_repos": len(repos),
+        "total_stars": total_stars,
+        "most_starred_repo": most_starred,
+    }
+
+
+def get_contribution_stats():
     query = """
     query($login: String!) {
       user(login: $login) {
         contributionsCollection {
           contributionCalendar {
+            totalContributions
             weeks {
               contributionDays {
                 date
@@ -186,9 +218,11 @@ def get_contribution_streak():
         {"login": USERNAME},
     )
 
+    calendar = data["user"]["contributionsCollection"]["contributionCalendar"]
+
     days = []
 
-    for week in data["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]:
+    for week in calendar["weeks"]:
         days.extend(week["contributionDays"])
 
     days.sort(key=lambda x: x["date"])
@@ -213,7 +247,7 @@ def get_contribution_streak():
         else:
             break
 
-    return current, longest
+    return current, longest, calendar["totalContributions"]
 
 
 def main():
@@ -225,12 +259,15 @@ def main():
 
     latest_repo, last_commit = get_latest_repo_and_commit(repos)
 
+    repo_stats = get_repo_stats(repos)
+
     try:
-        current_streak, longest_streak = get_contribution_streak()
+        current_streak, longest_streak, total_this_year = get_contribution_stats()
     except Exception as e:
-        print(f"Could not calculate contribution streak: {e}")
+        print(f"Could not calculate contribution stats: {e}")
         current_streak = None
         longest_streak = None
+        total_this_year = None
 
     output = {
         "status": get_status(now.hour),
@@ -241,8 +278,12 @@ def main():
             "last_commit": last_commit,
             "current_streak": current_streak,
             "longest_streak": longest_streak,
+            "contributions_this_year": total_this_year,
+            "total_repos": repo_stats["total_repos"],
+            "total_stars": repo_stats["total_stars"],
+            "most_starred_repo": repo_stats["most_starred_repo"],
         },
-        "updated": now.isoformat(),
+        "updated": now.strftime("%Y-%m-%d %H:%M IST"),
     }
 
     with open(README, "w", encoding="utf-8") as f:
@@ -258,4 +299,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
