@@ -56,15 +56,17 @@ def github_graphql(query, variables):
 
 
 def get_status(hour):
-    if 3 <= hour < 6:
+    if 2 <= hour <= 6:
         return "am I dreaming"
+    if 6 <= hour < 9 :
+        return "at the gym"
     if 6 <= hour < 12:
         return "good morning, time to ship"
     if 12 <= hour < 15:
         return "BIRIYANI TIME"
     if 15 <= hour < 20 :
         return "debugging arc"
-    if 20 <= hour < :
+    if 20 <= hour <= 23 :
         return "Struggling with a deadline"
     return "having a chai without sugar"
 
