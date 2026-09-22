@@ -4,7 +4,7 @@
   "weather": {
     "location": "Hyderabad",
     "temperature": "27°C",
-    "condition": "Light rain shower"
+    "condition": "Patchy rain nearby"
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-09-22 02:28 IST"
+  "updated": "2026-09-22 05:31 IST"
 }
 ```
