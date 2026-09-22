@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "debugging arc",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "29°C",
-    "condition": "Patchy rain nearby"
+    "temperature": "25°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-09-22 15:21 IST"
+  "updated": "2026-09-22 20:11 IST"
 }
 ```
