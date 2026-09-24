@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "having a chai without sugar",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "23°C",
-    "condition": "Light rain shower"
+    "temperature": "22°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-09-25 00:31 IST"
+  "updated": "2026-09-25 03:44 IST"
 }
 ```
