@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "at the gym",
+  "status": "BIRIYANI TIME",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "24°C",
-    "condition": "Cloudy "
+    "temperature": "29°C",
+    "condition": "Partly Cloudy "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-09-29 07:17 IST"
+  "updated": "2026-09-29 13:50 IST"
 }
 ```
