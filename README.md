@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "am I dreaming",
+  "status": "BIRIYANI TIME",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "25°C",
-    "condition": "Partly Cloudy"
+    "temperature": "29°C",
+    "condition": "Sunny"
   },
   "github": {
     "top_languages": [
@@ -19,13 +19,13 @@
     "current_streak": 0,
     "longest_streak": 12,
     "contributions_this_year": 218,
-    "total_repos": 42,
+    "total_repos": 43,
     "total_stars": 7,
     "most_starred_repo": {
       "name": "bropal404",
       "stars": 1
     }
   },
-  "updated": "2026-09-30 05:49 IST"
+  "updated": "2026-09-30 12:06 IST"
 }
 ```
