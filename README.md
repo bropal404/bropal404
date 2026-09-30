@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "debugging arc",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "28°C",
-    "condition": "Clear "
+    "temperature": "25°C",
+    "condition": "Haze"
   },
   "github": {
     "top_languages": [
@@ -16,7 +16,7 @@
     ],
     "latest_active_repo": "mess-bot",
     "last_commit": "2026-09-30T08:56:09Z",
-    "current_streak": 1,
+    "current_streak": 0,
     "longest_streak": 12,
     "contributions_this_year": 219,
     "total_repos": 44,
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-09-30 19:05 IST"
+  "updated": "2026-10-01 00:36 IST"
 }
 ```
