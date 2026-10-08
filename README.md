@@ -1,9 +1,9 @@
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "26°C",
+    "temperature": "23°C",
     "condition": "Smoky haze"
   },
   "github": {
@@ -14,18 +14,18 @@
       "TypeScript",
       "HTML"
     ],
-    "latest_active_repo": "FLIPKART_GRIDLOCK_8.0_DASHBOARD",
-    "last_commit": "2026-06-23T19:08:39Z",
-    "current_streak": 1,
+    "latest_active_repo": "indic-lm",
+    "last_commit": "2026-10-08T06:51:09Z",
+    "current_streak": 0,
     "longest_streak": 12,
-    "contributions_this_year": 219,
-    "total_repos": 44,
+    "contributions_this_year": 247,
+    "total_repos": 45,
     "total_stars": 7,
     "most_starred_repo": {
       "name": "bropal404",
       "stars": 1
     }
   },
-  "updated": "2026-10-08 21:52 IST"
+  "updated": "2026-10-09 03:29 IST"
 }
 ```
