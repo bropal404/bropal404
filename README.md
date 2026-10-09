@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "BIRIYANI TIME",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "33°C",
-    "condition": "Sunny"
+    "temperature": null,
+    "condition": "unavailable"
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-09 14:22 IST"
+  "updated": "2026-10-09 21:35 IST"
 }
 ```
