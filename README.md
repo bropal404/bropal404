@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "debugging arc",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "29°C",
-    "condition": "Sunny"
+    "temperature": "24°C",
+    "condition": "Clear "
   },
   "github": {
     "top_languages": [
@@ -16,9 +16,9 @@
     ],
     "latest_active_repo": "indic-lm",
     "last_commit": "2026-10-08T06:51:09Z",
-    "current_streak": 0,
+    "current_streak": 1,
     "longest_streak": 12,
-    "contributions_this_year": 247,
+    "contributions_this_year": 253,
     "total_repos": 45,
     "total_stars": 7,
     "most_starred_repo": {
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-10 19:02 IST"
+  "updated": "2026-10-10 23:57 IST"
 }
 ```
