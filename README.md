@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "24°C",
-    "condition": "Partly Cloudy "
+    "temperature": "21°C",
+    "condition": "Cloudy "
   },
   "github": {
     "top_languages": [
@@ -14,8 +14,8 @@
       "TypeScript",
       "JavaScript"
     ],
-    "latest_active_repo": "green-customer-insights-platform",
-    "last_commit": "2026-10-12T12:02:34Z",
+    "latest_active_repo": "FLIPKART_GRIDLOCK_8.0_DASHBOARD",
+    "last_commit": "2026-06-23T19:08:39Z",
     "current_streak": 0,
     "longest_streak": 12,
     "contributions_this_year": 276,
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-13 21:22 IST"
+  "updated": "2026-10-14 02:40 IST"
 }
 ```
