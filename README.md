@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "debugging arc",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "31°C",
-    "condition": "Sunny"
+    "temperature": "24°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -14,18 +14,18 @@
       "TypeScript",
       "JavaScript"
     ],
-    "latest_active_repo": "FLIPKART_GRIDLOCK_8.0_DASHBOARD",
-    "last_commit": "2026-06-23T19:08:39Z",
-    "current_streak": 0,
+    "latest_active_repo": "snes-phone-controller",
+    "last_commit": "2026-10-14T13:39:22Z",
+    "current_streak": 1,
     "longest_streak": 12,
-    "contributions_this_year": 276,
-    "total_repos": 46,
+    "contributions_this_year": 277,
+    "total_repos": 47,
     "total_stars": 8,
     "most_starred_repo": {
       "name": "bropal404",
       "stars": 1
     }
   },
-  "updated": "2026-10-14 17:11 IST"
+  "updated": "2026-10-14 22:32 IST"
 }
 ```
