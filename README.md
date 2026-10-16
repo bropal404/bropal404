@@ -1,9 +1,9 @@
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "26°C",
+    "temperature": "24°C",
     "condition": "Overcast "
   },
   "github": {
@@ -16,7 +16,7 @@
     ],
     "latest_active_repo": "snes-phone-controller",
     "last_commit": "2026-10-14T13:39:22Z",
-    "current_streak": 7,
+    "current_streak": 0,
     "longest_streak": 12,
     "contributions_this_year": 285,
     "total_repos": 47,
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-16 22:01 IST"
+  "updated": "2026-10-17 01:23 IST"
 }
 ```
