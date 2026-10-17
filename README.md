@@ -3,8 +3,8 @@
   "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "27°C",
-    "condition": "Light drizzle"
+    "temperature": "26°C",
+    "condition": "Partly Cloudy "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-17 20:56 IST"
+  "updated": "2026-10-17 23:53 IST"
 }
 ```
