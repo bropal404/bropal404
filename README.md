@@ -4,7 +4,7 @@
   "weather": {
     "location": "Hyderabad",
     "temperature": "22°C",
-    "condition": "Overcast "
+    "condition": "Partly Cloudy "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-19 04:29 IST"
+  "updated": "2026-10-19 06:34 IST"
 }
 ```
