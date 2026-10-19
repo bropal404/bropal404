@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "debugging arc",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "29°C",
-    "condition": "Sunny"
+    "temperature": "23°C",
+    "condition": "Clear "
   },
   "github": {
     "top_languages": [
@@ -16,9 +16,9 @@
     ],
     "latest_active_repo": "snes-phone-controller",
     "last_commit": "2026-10-14T13:39:22Z",
-    "current_streak": 1,
+    "current_streak": 0,
     "longest_streak": 12,
-    "contributions_this_year": 298,
+    "contributions_this_year": 301,
     "total_repos": 47,
     "total_stars": 8,
     "most_starred_repo": {
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-19 18:25 IST"
+  "updated": "2026-10-20 00:44 IST"
 }
 ```
