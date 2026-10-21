@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "am I dreaming",
+  "status": "BIRIYANI TIME",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "21°C",
-    "condition": "Cloudy "
+    "temperature": "31°C",
+    "condition": "Sunny"
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-21 06:57 IST"
+  "updated": "2026-10-21 12:58 IST"
 }
 ```
