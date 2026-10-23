@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
     "temperature": "24°C",
-    "condition": "Cloudy "
+    "condition": "Smoky haze"
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-23 23:44 IST"
+  "updated": "2026-10-24 03:30 IST"
 }
 ```
