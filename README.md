@@ -3,8 +3,8 @@
   "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "23°C",
-    "condition": "Overcast "
+    "temperature": "22°C",
+    "condition": "Clear "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-25 04:35 IST"
+  "updated": "2026-10-25 06:32 IST"
 }
 ```
