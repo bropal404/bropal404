@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "BIRIYANI TIME",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "29°C",
-    "condition": "Cloudy "
+    "temperature": "24°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-27 13:10 IST"
+  "updated": "2026-10-27 19:51 IST"
 }
 ```
