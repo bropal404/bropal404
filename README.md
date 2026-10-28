@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "debugging arc",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "24°C",
-    "condition": "Patchy rain nearby"
+    "temperature": "22°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -18,7 +18,7 @@
     "last_commit": "2026-10-12T11:42:58Z",
     "current_streak": 0,
     "longest_streak": 12,
-    "contributions_this_year": 304,
+    "contributions_this_year": 307,
     "total_repos": 47,
     "total_stars": 8,
     "most_starred_repo": {
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-10-28 18:10 IST"
+  "updated": "2026-10-29 00:16 IST"
 }
 ```
