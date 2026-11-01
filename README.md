@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "am I dreaming",
+  "status": "at the gym",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "23°C",
-    "condition": "Partly Cloudy "
+    "temperature": "24°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-01 03:54 IST"
+  "updated": "2026-11-01 07:36 IST"
 }
 ```
