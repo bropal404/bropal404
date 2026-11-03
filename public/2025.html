@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width;initial-scale=1">
+    <title>Gopal Kataria</title>
+    <meta name="description" content="ECD Sophomore at IIIT Hyderabad, part time hardware hacker
+    and software sorcerer.">
+    <meta name="title" content="Gopal Kataria - IIIT H" >
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Merienda:wght@700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="main">
+        <img src="dp.jpg" alt="Gopal Kataria" id="dp" />
+        <div class="box" id="box2">
+            <div class="uppertext"> </div>
+            <div class="name">Gopal Kataria</div>
+            <div class="bottext">ECD Sophomore at IIIT Hyderabad. Co-ordinator, Open Source Developers Group, IIITH. Events & Operations Team Head, E-Cell, IIITH. Member, Electronics and Robotics Club, IIITH.
+                <br><br><b>
+                    If you've got free pizza with extra cheese or a project that's as exciting as a pipelined RISC-V processor,
+                    hit me up! DM on LinkedIn or <a href="mailto:gopalkataria@outlook.com">drop an E-mail</a>
+            </div>
+            <div class="buttonholder">
+                <div class="projectsbtn"> <a class="projecturl"
+                    href="https://github.com/Gopalkataria">Github
+                </a></div>
+                <div class="projectsbtn"> <a class="projecturl" href="https://www.linkedin.com/in/gopalkataria/">LinkedIn
+                </a></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="footertext">&copy; 2025 Gopal Kataria | You are visitor no. <span id="visitor-count">Loading...</span></p>
+    </footer>
+
+    <script>
+        fetch('/~gopal.kataria/cgi-bin/vistor-count.py')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('visitor-count').innerText = data.visitor_count;
+            })
+            .catch(error => {
+                document.getElementById('visitor-count').innerText = 'Error';
+                console.error('Error fetching visitor count:', error);
+            });
+    </script>
+</body>
+
+</html>

@@ -1,58 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width;initial-scale=1">
-    <title>Gopal Kataria</title>
-    <meta name="description" content="ECD Sophomore at IIIT Hyderabad, part time hardware hacker
-    and software sorcerer.">
-    <meta name="title" content="Gopal Kataria - IIIT H" >
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Merienda:wght@700&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Kataria Chronicle — Gopal Kataria</title>
+  <meta name="description" content="Gopal Kataria: systems, infrastructure and ML engineer at IIIT Hyderabad. Distributed systems, C and networking, Hindi speech models, and a festival ticketing system that didn't fall over.">
+  <meta name="theme-color" content="#E4E3DD" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#131415" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="The Kataria Chronicle">
+  <meta property="og:description" content="Gopal Kataria: systems, infrastructure and ML engineer at IIIT Hyderabad.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111'/%3E%3Ctext x='32' y='47' font-family='serif' font-weight='900' font-size='44' text-anchor='middle' fill='%23E4E3DD'%3EK%3C/text%3E%3C/svg%3E">
+
+  <script>
+    /* Decide theme + intro before first paint so nothing flashes. */
+    (function () {
+      var d = document.documentElement, t = null, seen = false;
+      try { t = localStorage.getItem('kc-theme'); } catch (e) {}
+      if (t !== 'morning' && t !== 'night') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'morning';
+      d.setAttribute('data-theme', t);
+      try { seen = sessionStorage.getItem('kc-intro') === '1'; } catch (e) {}
+      var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!rm && !seen && !/nointro/.test(location.search + location.hash)) d.classList.add('intro');
+      d.classList.add('js');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Kalam:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Tiro+Devanagari+Hindi&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="press/style.css">
+
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+  </script>
+  <script type="module" src="press/main.js"></script>
 </head>
 
 <body>
-    <div id="main">
-        <img src="dp.jpg" alt="Gopal Kataria" id="dp" />
-        <div class="box" id="box2">
-            <div class="uppertext"> </div>
-            <div class="name">Gopal Kataria</div>
-            <div class="bottext">ECD Sophomore at IIIT Hyderabad. Co-ordinator, Open Source Developers Group, IIITH. Events & Operations Team Head, E-Cell, IIITH. Member, Electronics and Robotics Club, IIITH.
-                <br><br><b>
-                    If you've got free pizza with extra cheese or a project that's as exciting as a pipelined RISC-V processor,
-                    hit me up! DM on LinkedIn or <a href="mailto:gopalkataria@outlook.com">drop an E-mail</a>
-            </div>
-            <div class="buttonholder">
-                <div class="projectsbtn"> <a class="projecturl"
-                    href="https://github.com/Gopalkataria">Github
-                </a></div>
-                <div class="projectsbtn"> <a class="projecturl" href="https://www.linkedin.com/in/gopalkataria/">LinkedIn
-                </a></div>
-            </div>
+  <!-- Spinning-newspaper intro (three.js). Shown only when <html> has .intro -->
+  <div id="intro" aria-hidden="true">
+    <canvas id="intro-canvas"></canvas>
+    <p class="intro-hint">Stop the presses — click to skip</p>
+  </div>
+
+  <!-- Shared WebGL layer: halftone photos, printer's loupe, paper confetti -->
+  <canvas id="press" aria-hidden="true"></canvas>
+
+  <a class="skip" href="#front">Skip to the front page</a>
+
+  <div class="page">
+    <!-- ───────────────────────── MASTHEAD ───────────────────────── -->
+    <header class="masthead">
+      <div class="ears">
+        <div class="ear ear-left">
+          <span class="ear-k">Weather</span>
+          <b id="wx-temp">Hyderabad</b>
+          <span id="wx-desc" data-redact>Forecast: biriyani by evening.</span>
         </div>
-    </div>
 
-    <footer>
-        <p id="footertext">&copy; 2025 Gopal Kataria | You are visitor no. <span id="visitor-count">Loading...</span></p>
+        <div class="nameplate">
+          <a href="#" id="nameplate" title="Run the presses again">
+            <h1>The Kataria Chronicle</h1>
+          </a>
+          <p class="motto"><span>“All the commits that are fit to push”</span><span class="deva" lang="hi">कटारिया समाचार</span></p>
+        </div>
+
+        <div class="ear ear-right">
+          <span class="ear-k">Editor’s status</span>
+          <b id="status" data-redact>Price: one biriyani</b>
+          <span id="late">Late city edition</span>
+        </div>
+      </div>
+
+      <div class="dateline">
+        <span><span id="vol">Vol. IV</span> · No. 404</span>
+        <span class="dl-mid"><span id="today">Hyderabad</span><span id="clock"></span></span>
+        <button id="edition" type="button" aria-pressed="false" title="Switch edition">
+          <span class="ed-ico" aria-hidden="true">☀</span> <span class="ed-label">Morning Edition</span>
+        </button>
+      </div>
+
+      <div class="ticker" aria-label="Markets">
+        <div class="ticker-track" id="ticker"></div>
+      </div>
+    </header>
+
+    <nav class="sections" aria-label="Sections">
+      <a href="#front"><i>A</i>Front Page</a>
+      <a href="#business"><i>B</i>Business</a>
+      <a href="#science"><i>C</i>Science</a>
+      <a href="#technology"><i>D</i>Technology</a>
+      <a href="#sports"><i>E</i>Sports</a>
+      <a href="#society"><i>F</i>Society</a>
+      <a href="#opinion"><i>G</i>Opinion</a>
+      <a href="#classifieds"><i>H</i>Classifieds</a>
+    </nav>
+
+    <main>
+      <!-- ───────────────────────── FRONT PAGE ───────────────────────── -->
+      <section id="front" class="front grid" aria-label="Front page">
+        <article class="lead s-9">
+          <p class="kicker">Exclusive · Profile</p>
+          <h2 class="hed hed-xl" data-set>Hyderabad Engineer Builds Systems That Refuse To Fall Over</h2>
+          <p class="dek">Gopal Kataria, an Electronics &amp; Communication student at IIIT Hyderabad, has spent three years shipping ticketing platforms, file-transfer daemons and Hindi speech models. He would like to do more of it.</p>
+          <p class="byline">By Our Staff Correspondent · Hyderabad</p>
+
+          <div class="lead-grid">
+            <figure class="photo lead-photo">
+              <div class="frame" data-ht data-cell="7" style="--ar: 3 / 4">
+                <img src="img/portrait.jpg" alt="Vintage studio portrait of a man in a suit, standing in for the subject" width="741" height="1024">
+                <span class="stamp" aria-hidden="true">Exclusive</span>
+              </div>
+              <figcaption><b>ARTIST’S IMPRESSION</b> of the subject, c. 1930. A recent photograph was requested; the subject was rebuilding a Docker image. <span class="credit">Museum of New Zealand · CC0</span></figcaption>
+            </figure>
+
+            <div class="body cols-2 dropcap">
+              <p><span class="dateline-in">HYDERABAD —</span> Gopal Kataria does not use a desktop environment. His GitHub bio calls them bloat and recommends vim, lynx and tmux instead. That says a lot about how he builds software: keep it lean, and understand every layer.</p>
+              <p>Kataria is a B.Tech + MS (by Research) student in Electronics and Communication Engineering at IIIT Hyderabad, class of 2028. His work runs the length of the stack: TLS and epoll in C, Go and Postgres under festival-day traffic, and lately, PyTorch models that speak Hinglish.</p>
+              <p>This summer, as an AI research intern at ixigo, he built a Hindi/Hinglish speech corpus from real call-centre recordings and LoRA fine-tuned an open-source text-to-speech model. Served with vLLM, it starts streaming audio in <span class="pencil" data-note="fast!">about 140 ms</span>, on par with the commercial provider in production. <a class="jump" href="#business">Business, B1</a></p>
+              <p>On campus he is better known for keeping things up. The Felicity 2026 registration platform, built by the team he led, stayed up through last-minute requirement changes. <span class="pencil" data-note="checked twice ✓">Zero downtime.</span> <a class="jump" href="#technology">Technology, D1</a></p>
+              <p>Between deployments he studies change-point detection for wireless signals at SPCRC, ran the Open Source Developers Group for a year, and once made a 7-billion-parameter language model forget Harry Potter. <a class="jump" href="#science">Science, C1</a></p>
+              <p>Asked what comes next, Kataria pointed to harder problems in distributed systems and ML infrastructure. Then he went to get biriyani.</p>
+            </div>
+          </div>
+        </article>
+
+        <aside class="rail s-3" aria-label="Front page sidebar">
+          <div class="box late-news" id="late-news" hidden>
+            <p class="box-k">Late News</p>
+            <p id="late-news-text"></p>
+          </div>
+
+          <div class="box numbers">
+            <p class="box-k">By the Numbers</p>
+            <dl>
+              <div><dt>Time to first audio, Hindi TTS</dt><dd>~140 ms</dd></div>
+              <div><dt>Harry Potter recall erased</dt><dd>77%</dd></div>
+              <div><dt>JEE Main percentile</dt><dd>99.17</dd></div>
+            </dl>
+          </div>
+
+          <div class="box inside">
+            <p class="box-k">Inside Today</p>
+            <ol>
+              <li><a href="#business">The ixigo voice-bot internship</a><span>B1</span></li>
+              <li><a href="#science">Teaching a model to forget</a><span>C2</span></li>
+              <li><a href="#technology">Ticketing under load</a><span>D1</span></li>
+              <li><a href="#sports">Hackathon league table</a><span>E1</span></li>
+              <li><a href="#opinion">Op-Ed: DEs are bloat</a><span>G1</span></li>
+              <li><a href="#opinion">Puzzle: spot the bug</a><span>G2</span></li>
+              <li><a href="#classifieds">Write to the editor</a><span>H1</span></li>
+            </ol>
+          </div>
+        </aside>
+      </section>
+
+      <div class="fold" aria-hidden="true"><span>Above the fold ↑</span></div>
+
+      <!-- ───────────────────────── BUSINESS ───────────────────────── -->
+      <header class="sec-head" id="business">
+        <span class="sec-page">B1</span>
+        <h2 class="sec-title">Business</h2>
+        <span class="sec-note">Internships, infrastructure and other paid work</span>
+      </header>
+
+      <section class="grid" aria-label="Business">
+        <article class="story s-8">
+          <figure class="photo">
+            <div class="frame" data-ht style="--ar: 16 / 8"><img src="img/mic.jpg" alt="Studio condenser microphones in black and white" loading="lazy" width="1024" height="683"></div>
+            <figcaption><b>LISTENING IN.</b> Studio microphones, presumably waiting for someone to say “Thiruvananthapuram.” <span class="credit">Stock · rawpixel · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">AI Research Intern · ixigo</p>
+          <h3 class="hed hed-l" data-set>Travel App’s Voice Bot Learns To Pronounce Thiruvananthapuram</h3>
+          <p class="dek">An intern’s LoRA-tuned Hindi/Hinglish speech model streams its first audio in about 140 ms, on par with the commercial provider in production.</p>
+          <p class="byline">May – July 2026</p>
+          <div class="body cols-2">
+            <p>Ask a text-to-speech model to read out a PNR number, a fare in rupees or a station in Kerala, and it will usually stumble somewhere. Kataria’s fix started with the data.</p>
+            <p>He built a Hindi/Hinglish corpus from real call-centre recordings, processing the audio with Librosa and Pandas. He then cut targeted datasets for the places TTS systems usually go wrong: numerals, travel terms, code-mixed Hinglish and Indian place names.</p>
+            <p>He LoRA fine-tuned an open-source Hindi/Hinglish TTS model with PEFT and Hugging Face Transformers, and served it with vLLM on Modal. Streaming first-byte latency came in at around 140 ms, comparable to the commercial provider in production.</p>
+          </div>
+          <ul class="tags"><li>Librosa</li><li>Pandas</li><li>PyTorch</li><li>PEFT / LoRA</li><li>HF Transformers</li><li>vLLM</li><li>Modal</li></ul>
+        </article>
+
+        <article class="story s-4 ruled">
+          <figure class="photo">
+            <div class="frame" data-ht style="--ar: 4 / 3"><img src="img/servers.jpg" alt="Rows of server racks lit in blue" loading="lazy" width="1024" height="576"></div>
+            <figcaption><b>NOTHING TO SEE HERE.</b> Servers, behaving. <span class="credit">Stock · rawpixel · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">Sysadmin &amp; Web Dev · DFL, IIIT-H</p>
+          <h3 class="hed hed-m" data-set>Student Portal Goes Live; Registrar Reports No Fires</h3>
+          <p class="dek">Linux, Docker, Nginx and a CI/CD pipeline behind course registration and online payments for 200+ students.</p>
+          <p class="byline">June – December 2025</p>
+          <div class="body">
+            <p>Kataria owned the end-to-end deployment of a production student portal built on SvelteKit and PostgreSQL. He provisioned the Linux infrastructure and set up the Docker, Nginx and CI/CD that keep it running.</p>
+            <p>The portal handles course registration and online payments for more than 200 students. No complaints have reached this newspaper.</p>
+          </div>
+          <ul class="tags"><li>Linux</li><li>Docker</li><li>Nginx</li><li>CI/CD</li><li>SvelteKit</li><li>PostgreSQL</li></ul>
+        </article>
+      </section>
+
+      <!-- ───────────────────────── SCIENCE ───────────────────────── -->
+      <header class="sec-head" id="science">
+        <span class="sec-page">C1</span>
+        <h2 class="sec-title">Science</h2>
+        <span class="sec-note">Research, signals and language models</span>
+      </header>
+
+      <section class="grid" aria-label="Science">
+        <article class="story s-7">
+          <figure class="photo">
+            <div class="frame" data-ht style="--ar: 16 / 7"><img src="img/dishes.jpg" alt="Large white satellite dishes under a blue sky" loading="lazy" width="1024" height="685"></div>
+            <figcaption><b>LISTENING FOR CHANGE.</b> Somewhere out there, a signal is about to change. <span class="credit">Stock · rawpixel · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">Undergraduate Researcher · SPCRC, IIIT-H</p>
+          <h3 class="hed hed-l" data-set>Something Changed In The Signal. He Wants To Know Exactly When.</h3>
+          <p class="dek">A new change-point detection framework for transmitted wireless signals, with theoretical guarantees to match.</p>
+          <p class="byline">May 2025 – present · Manuscript in preparation</p>
+
+          <figure class="chart" id="fig1">
+            <div class="chart-head">
+              <b>Fig. 1</b> How sequential detection works, in general.
+            </div>
+            <div class="chart-body" role="img" aria-label="Two stacked panels sharing a sample axis. Top: a noisy signal whose mean shifts up at sample 100. Bottom: a CUSUM statistic that stays near zero, then climbs after the change and crosses the threshold, raising an alarm."></div>
+            <div class="chart-tip" hidden></div>
+            <figcaption>A CUSUM statistic stays near zero, climbs after the change, and raises an alarm when it crosses the threshold <i>h</i>. Simulated data for illustration; not the author’s method.
+              <details>
+                <summary>Figure data</summary>
+                <table id="fig1-table"><tbody></tbody></table>
+              </details>
+            </figcaption>
+          </figure>
+
+          <div class="body cols-2">
+            <p>When a transmitted signal changes, whether a new emitter appears, a channel degrades or someone starts jamming, the receiver should notice quickly without raising false alarms. That trade-off is the subject of sequential change-point detection, and of Kataria’s research at the Signal Processing and Communications Research Centre.</p>
+            <p>He has developed a new detection framework for transmitted wireless signals, aimed at surveillance and defence communications. He derived theoretical performance guarantees for it and backed them with numerical and simulation-based analysis. A manuscript is in preparation.</p>
+          </div>
+          <ul class="tags"><li>Detection theory</li><li>Sequential analysis</li><li>Change-point detection</li><li>Time series</li><li>Copulas</li><li>MATLAB / Octave</li></ul>
+        </article>
+
+        <div class="s-5 ruled stack">
+          <article class="story" id="c2">
+            <figure class="photo">
+              <div class="frame" data-ht style="--ar: 16 / 9"><img src="img/library.jpg" alt="A long, grand library hall lined with bookshelves" loading="lazy" width="960" height="540"></div>
+              <figcaption><b>FORGOTTEN.</b> Somewhere in here, a book about a boy wizard. <span class="credit">Stock · Mike Wilson / StockSnap · CC0</span></figcaption>
+            </figure>
+            <p class="kicker">Interpretability · C2</p>
+            <h3 class="hed hed-m" data-set>Language Model Made To Forget Harry Potter; Muggles Unaffected</h3>
+            <p class="dek">Ablating sparse-autoencoder features cut Harry Potter recall by <span class="pencil" data-note="!!">77%</span> for a 0.1% rise in perplexity.</p>
+            <div class="body">
+              <p>Using a 16,384-feature sparse-autoencoder dictionary on LLaMA-7B’s residual stream, Kataria used TransformerLens to find the features that fire on Harry Potter knowledge, then ablated them. Recall fell 77%, perplexity rose just 0.1%, and the edit was four times more tightly localised.</p>
+            </div>
+            <ul class="tags"><li>PyTorch</li><li>Transformers</li><li>Sparse autoencoders</li><li>TransformerLens</li></ul>
+            <a class="more" href="https://github.com/bropal404/INLP_PROJECT" target="_blank" rel="noopener">Read the code →</a>
+          </article>
+
+          <article class="story">
+            <figure class="photo">
+              <div class="frame" data-ht style="--ar: 16 / 8"><img src="img/type.jpg" alt="Rows of wooden letterpress type blocks" loading="lazy" width="1024" height="766"></div>
+              <figcaption><b>SET IN TYPE.</b> Tokenisers have it easier. <span class="credit">Stock · rawpixel · CC0</span></figcaption>
+            </figure>
+            <p class="kicker">Language Models · Side Project</p>
+            <h3 class="hed hed-m" data-set>Small Model, Two Scripts: Hindi And Nepali LM Trained From Scratch</h3>
+            <div class="body">
+              <p><b>indic-lm</b> is a small language model for Hindi and Nepali, trained from scratch in PyTorch. The repository covers the whole pipeline, from extracting raw text to training.</p>
+            </div>
+            <blockquote class="pull deva" lang="hi">“नमस्ते, दुनिया।”<cite lang="en">— the model’s first words, probably</cite></blockquote>
+            <a class="more" href="https://github.com/bropal404/indic-lm" target="_blank" rel="noopener">github.com/bropal404/indic-lm →</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── TECHNOLOGY ───────────────────────── -->
+      <header class="sec-head" id="technology">
+        <span class="sec-page">D1</span>
+        <h2 class="sec-title">Technology</h2>
+        <span class="sec-note">Projects, daemons and things that ship</span>
+      </header>
+
+      <section class="grid" aria-label="Technology">
+        <article class="story feature s-12">
+          <div class="feature-grid">
+            <figure class="photo">
+              <div class="frame" data-ht data-cell="6.5" style="--ar: 21 / 10"><img src="img/crowd.jpg" alt="A concert crowd making heart shapes with their hands under stage lights" loading="lazy" width="960" height="640"></div>
+              <figcaption><b>THE QUEUE.</b> Not pictured: 11,000 people refreshing the registration page. <span class="credit">Stock · Anthony Delanoix / StockSnap · CC0</span></figcaption>
+            </figure>
+            <div>
+              <p class="kicker">Infrastructure · Felicity, IIIT-H</p>
+              <h3 class="hed hed-xl2" data-set>Festival Ticketing System Absorbs 1,500% Traffic Spike, Keeps Selling</h3>
+              <p class="dek">A fest-day rush, a swollen email queue, and no downtime.</p>
+            </div>
+          </div>
+          <ul class="statline">
+            <li><b>11,000+</b> registrations</li>
+            <li><b>6,000+</b> check-ins</li>
+            <li><b>&lt;20 s</b> to confirmation email</li>
+          </ul>
+          <div class="body cols-3 dropcap-sm">
+            <p>When registrations open for Felicity, IIIT Hyderabad’s annual fest, the traffic arrives all at once. Kataria built and scaled the festival’s ticketing system on Go Fiber, PostgreSQL and React behind Nginx. It took the surge without falling over.</p>
+            <p>When the email queue backed up, it was cleared overnight through Azure Communication Services, and confirmation emails now land in under 20 seconds.</p>
+            <p>As Felicity 2026’s Tech Head, he led the engineering team behind the platform, supporting 100+ paying teams through a steady stream of last-minute requirement changes. <span class="pencil" data-note="really? — yes.">Downtime: zero.</span> <a class="jump" href="#society">Society, F1</a></p>
+          </div>
+          <ul class="tags"><li>Go</li><li>Fiber</li><li>PostgreSQL</li><li>React</li><li>Azure Communication Services</li><li>Nginx</li></ul>
+          <a class="more" href="https://felicity.iiit.ac.in" target="_blank" rel="noopener">felicity.iiit.ac.in →</a>
+        </article>
+
+        <article class="story s-4">
+          <figure class="photo">
+            <div class="frame" data-ht style="--ar: 4 / 3"><img src="img/cables.jpg" alt="Tangled blue and white network cables plugged into a switch" loading="lazy" width="1024" height="683"></div>
+            <figcaption><b>NOT REQUIRED.</b> The cloud. <span class="credit">Stock · rawpixel · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">Systems · C</p>
+          <h3 class="hed hed-m" data-set>No Cloud Required: Daemon Moves Files Across The LAN, Trusts No One</h3>
+          <div class="body">
+            <p><b>LANdrop</b> is a peer-to-peer file-transfer daemon for Linux, written in C. Peers find each other over UDP, an epoll-driven event loop handles the connections, and files move in OpenSSL/TLS-secured chunks verified with SHA-256. New peers are pinned on first use and remembered in a persistent trust store.</p>
+          </div>
+          <ul class="tags"><li>C</li><li>epoll</li><li>OpenSSL / TLS</li><li>Sockets</li><li>SHA-256</li></ul>
+          <a class="more" href="https://github.com/bropal404/Landrop-clone" target="_blank" rel="noopener">Read the code →</a>
+        </article>
+
+        <article class="story s-4 ruled">
+          <figure class="photo">
+            <div class="frame" data-ht style="--ar: 4 / 3"><img src="img/containers.jpg" alt="Aerial view of stacked shipping containers at a port" loading="lazy" width="1024" height="683"></div>
+            <figcaption><b>CONTAINERISED.</b> Literally. <span class="credit">Stock · rawpixel · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">Distributed Systems · Python</p>
+          <h3 class="hed hed-m" data-set>AI Agents Now Ship Their Own Containers</h3>
+          <div class="body">
+            <p>An agentic workflow orchestration platform. A FastAPI control plane dispatches work to isolated Docker workers, which swap artifacts asynchronously over Kafka. An Inspect → Build → Deploy pipeline turns code into a running containerised service on its own.</p>
+          </div>
+          <ul class="tags"><li>Python</li><li>FastAPI</li><li>Kafka</li><li>Docker</li><li>MongoDB</li></ul>
+          <a class="more" href="https://github.com/bropal404/agentic-ai-distributed-platform" target="_blank" rel="noopener">Read the code →</a>
+        </article>
+
+        <aside class="s-4 ruled briefs" aria-label="In brief">
+          <p class="box-k">In Brief</p>
+          <ul>
+            <li><a href="https://github.com/bropal404/bropesh" target="_blank" rel="noopener">bropesh</a> A small Linux shell in C, written for the Operating Systems course.</li>
+            <li><a href="https://github.com/bropal404/brainf--kinterpreter" target="_blank" rel="noopener">brainf**k interpreter</a> In C, naturally.</li>
+            <li><a href="https://github.com/bropal404/snes-phone-controller" target="_blank" rel="noopener">snes-phone-controller</a> Turns a phone into a SNES controller for RetroArch. Openly vibe-coded.</li>
+            <li><a href="https://github.com/bropal404/FLIPKART_GRIDLOCK_8.0_DASHBOARD" target="_blank" rel="noopener">GRiD 8.0 dashboard</a> Traffic-violation detection and automatic challans with YOLO, from photo to penalty.</li>
+            <li><a href="https://github.com/bropal404/ANRF-AISEHack-Flood-Detection-IBM" target="_blank" rel="noopener">Flood detection</a> Segmenting floods from SAR and multispectral satellite imagery, for ANRF AISEHACK.</li>
+            <li><a href="https://github.com/bropal404/green-customer-insights-platform" target="_blank" rel="noopener">green-customer-insights</a> Finds which retail-banking customers suit green products, and explains why.</li>
+            <li><a href="https://github.com/bropal404/matrix-chat-iiit" target="_blank" rel="noopener">matrix-chat-iiit</a> A FluffyChat fork, patched for IIIT’s Matrix server.</li>
+            <li><a href="https://github.com/bropal404/mess-bot" target="_blank" rel="noopener">mess-bot</a> Registers eggs at the Kadamba mess. Important work.</li>
+            <li><a href="https://github.com/bropal404/nix" target="_blank" rel="noopener">nix</a> &amp; <a href="https://github.com/bropal404/dotfiles" target="_blank" rel="noopener">dotfiles</a> NixOS, i3, sway, Hyprland. See Opinion, G1.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <!-- ───────────────────────── SPORTS ───────────────────────── -->
+      <header class="sec-head" id="sports">
+        <span class="sec-page">E1</span>
+        <h2 class="sec-title">Sports</h2>
+        <span class="sec-note">Hackathons, contests and other competitive programming</span>
+      </header>
+
+      <section class="grid" aria-label="Sports">
+        <article class="story s-8">
+          <p class="kicker">Season Review</p>
+          <h3 class="hed hed-l" data-set>Kataria Posts Strong Season On National Hackathon Circuit</h3>
+          <p class="dek">2nd place at Megathon 2026; semifinals at Google, Flipkart and ANRF; 337th of 16,000+ at Goldman Sachs.</p>
+          <div class="table-wrap">
+            <table class="league">
+              <caption>League table · Selected results</caption>
+              <thead><tr><th scope="col">Pos.</th><th scope="col">Competition</th><th scope="col">Field</th><th scope="col">Result</th></tr></thead>
+              <tbody>
+                <tr><td>2</td><td>Megathon 2026 <small>Lloyds problem statement</small></td><td>—</td><td><b>2nd place</b></td></tr>
+                <tr><td>337</td><td>Goldman Sachs India Hackathon <small>CS Arena</small></td><td>16,000+</td><td>337th overall</td></tr>
+                <tr><td>20</td><td>ANRF AISEHACK <small>IBM theme · flood detection</small></td><td>National</td><td>Top 100 semifinal · 18th pre-final · <b>20th overall</b></td></tr>
+                <tr><td>SF</td><td>Google Big Code</td><td>National</td><td>Online semifinal · Top 1,500 coders</td></tr>
+                <tr><td>SF</td><td>Flipkart GRiD 8.0</td><td>National</td><td>Online semifinal · Top 1,600 teams</td></tr>
+                <tr class="pre"><td>’23</td><td>JEE Main 2023</td><td>National</td><td><b>99.17</b> percentile</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+        <article class="story s-4 ruled">
+          <p class="kicker">Match Report</p>
+          <h3 class="hed hed-m" data-set>Satellites, Challans And A Season To Remember</h3>
+          <div class="body">
+            <p>The season opened with the JEE Main in 2023, where Kataria finished in the 99.17th percentile, and has run through the national hackathon circuit since. The latest result: <b>2nd place at Megathon 2026</b>, on the Lloyds problem statement.</p>
+            <p>The standout was ANRF’s AISEHACK, on the IBM theme. Kataria’s team segmented floods from SAR and multispectral satellite imagery and finished 20th overall, after placing 18th in the pre-finals. At the Goldman Sachs India Hackathon he finished 337th of more than 16,000.</p>
+            <p>Flipkart GRiD 8.0 brought a traffic-violation dashboard that goes from photo to penalty. It reached the online semifinals, as did his run at Google Big Code.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ───────────────────────── SOCIETY ───────────────────────── -->
+      <header class="sec-head" id="society">
+        <span class="sec-page">F1</span>
+        <h2 class="sec-title">Society</h2>
+        <span class="sec-note">Clubs, appointments and the campus bureau</span>
+      </header>
+
+      <section class="grid" aria-label="Society">
+        <article class="story s-6">
+          <figure class="photo">
+            <div class="frame" data-ht style="--ar: 16 / 9"><img src="img/laptop.jpg" alt="Hands typing code on a laptop" loading="lazy" width="960" height="640"></div>
+            <figcaption><b>WORKSHOP.</b> A fresher, moments before learning about <code>git rebase</code>. <span class="credit">Stock · Anita Peeples / StockSnap · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">Coordinator · Open Source Developers Group</p>
+          <h3 class="hed hed-l" data-set>Open-Source Club Grows As Freshers Discover Git Rebase</h3>
+          <p class="byline">March 2025 – March 2026</p>
+          <div class="body cols-2">
+            <p>As coordinator of IIIT Hyderabad’s Open Source Developers Group, Kataria led a 25-member community that ran Bash, Git and Docker workshops for more than 100 freshers and hackathons that drew over 300 participants.</p>
+            <p>Events were hosted in collaboration with Jane Street, FOSS United, Coding Ninjas and the Hyderabad Python User Group.</p>
+          </div>
+        </article>
+
+        <div class="s-3 ruled stack">
+          <article class="story appt">
+            <p class="kicker">Appointments</p>
+            <h3 class="hed hed-m" data-set>Named Tech Head, Felicity 2026</h3>
+            <div class="body">
+              <p>Led the engineering team behind the festival’s registration platform for 100+ paying teams. January – March 2026.</p>
+            </div>
+          </article>
+          <article class="story appt">
+            <p class="kicker">Appointments</p>
+            <h3 class="hed hed-m" data-set>Coordinator, OSDG</h3>
+            <div class="body"><p>A year at the head of the campus open-source community. March 2025 – March 2026.</p></div>
+          </article>
+        </div>
+
+        <article class="story s-3 ruled bureau">
+          <figure class="photo">
+            <div class="frame" data-ht data-cell="5" style="--ar: 4 / 3"><img src="img/charminar.jpg" alt="Historic photograph of the street leading to the Charminar, Hyderabad" loading="lazy" width="1024" height="761"></div>
+            <figcaption>Charminar, Hyderabad, c. 1880s. The bureau has since moved to Gachibowli. <span class="credit">Lala Deen Dayal · Getty Open Content · CC0</span></figcaption>
+          </figure>
+          <p class="kicker">Campus Bureau · Education</p>
+          <dl class="edu">
+            <div><dt>IIIT Hyderabad</dt><dd>B.Tech + MS by Research, Electronics &amp; Communication Engineering<span>2023 – 2028 (expected)</span></dd></div>
+            <div><dt>Vasantrao Dempo Higher Secondary School</dt><dd>Cujira, Goa<span>Class of 2023</span></dd></div>
+            <div><dt>Coursework</dt><dd>Operating Systems, Database Systems, Computer Networks, DSA</dd></div>
+          </dl>
+        </article>
+      </section>
+
+      <!-- ───────────────────────── OPINION ───────────────────────── -->
+      <header class="sec-head" id="opinion">
+        <span class="sec-page">G1</span>
+        <h2 class="sec-title">Opinion</h2>
+        <span class="sec-note">Op-eds, letters and puzzles</span>
+      </header>
+
+      <section class="grid" aria-label="Opinion">
+        <article class="story oped s-8">
+          <p class="kicker">Op-Ed</p>
+          <h3 class="hed hed-l oped-hed" data-set>Your Desktop Environment Is Bloat</h3>
+          <div class="oped-by">
+            <div class="frame mug" data-ht data-cell="4.5" style="--ar: 1 / 1"><img src="img/portrait.jpg" alt="" loading="lazy" width="741" height="1024"></div>
+            <p><b>Gopal Kataria</b> builds systems at IIIT Hyderabad. His dotfiles are public; judge accordingly.</p>
+          </div>
+          <div class="body cols-2 oped-body">
+            <p>I have nothing against desktop environments. I just don’t need one, and I suspect you don’t either.</p>
+            <p>Over the years I’ve run i3 with polybar, then sway, then Hyprland, with tint2 holding things together in between. These days it all lives in a dotfiles repo and a NixOS config, so any machine I sit at can be mine in minutes, and I know why every process on it is running.</p>
+            <p>Lean tools make you curious. If your browser is lynx, you learn what a web page actually is. If your editor is vim, you stop reaching for the <del class="pencil-del" data-ins="trackpad">mouse</del>. If your session lives in tmux, a dropped SSH connection is a minor inconvenience.</p>
+            <p>The same instinct shows up in my work: understand every layer, then remove the ones you don’t need. You don’t have to go all the way. But try a week with a tiling window manager. <span class="pencil" data-note="bold claim — Ed.">You might not come back.</span></p>
+          </div>
+        </article>
+
+        <aside class="s-4 ruled puzzle" aria-label="Puzzle">
+          <p class="box-k">Puzzle · Spot the Bug <span class="diff" title="Difficulty">★★☆</span></p>
+          <p class="puzzle-q">This C function compiles cleanly. Find two bugs.</p>
+<pre><code><span class="tk-t">char</span> *<span class="tk-f">greet</span>(<span class="tk-t">void</span>) {
+    <span class="tk-t">char</span> buf[<span class="tk-n">16</span>];
+    <span class="tk-f">strcpy</span>(buf, <span class="tk-s">"hello, recruiter"</span>);
+    <span class="tk-k">return</span> buf;
+}</code></pre>
+          <button class="answer" type="button" aria-expanded="false">
+            <span class="answer-k">Answer, upside down as tradition demands. Tap to flip.</span>
+            <span class="answer-body">“hello, recruiter” is 16 characters plus a NUL terminator, so strcpy writes 17 bytes into a 16-byte buffer. And buf lives on the stack, so the returned pointer dangles the moment greet() returns. Fix: malloc(strlen(s) + 1), or let the caller pass the buffer in.</span>
+          </button>
+        </aside>
+      </section>
+
+      <!-- ───────────────────────── CLASSIFIEDS ───────────────────────── -->
+      <header class="sec-head" id="classifieds">
+        <span class="sec-page">H1</span>
+        <h2 class="sec-title">Classifieds</h2>
+        <span class="sec-note">Skills, wants and ways to reach the editor</span>
+      </header>
+
+      <section class="classifieds" aria-label="Classifieds">
+        <div class="ads">
+          <div class="ad ad-big">
+            <p class="ad-k">Situation Wanted</p>
+            <p><b>ENGINEER</b>, IIIT-H (B.Tech + MS ECE, ’28) seeks internships and hard problems in systems, infrastructure and ML. Ships to production. References on request. <a href="#letters">Reply below.</a></p>
+          </div>
+          <div class="ad"><p class="ad-k">Languages</p><p>Python, C/C++, Go, TypeScript, SQL, Bash. All in working order. No reasonable offer refused.</p></div>
+          <div class="ad"><p class="ad-k">Backend &amp; APIs</p><p>FastAPI, Fiber, SvelteKit, React, REST, WebSockets. Lightly used, well maintained.</p></div>
+          <div class="ad ad-inv"><p class="ad-k">Infrastructure to Let</p><p>Linux, Docker, Kafka, PostgreSQL, MongoDB, Nginx, Azure, Git, GitHub Actions. Zero-downtime history.</p></div>
+          <div class="ad"><p class="ad-k">Systems</p><p>Distributed systems, concurrency, event-driven design (epoll), networking, TLS and applied cryptography. No job too low-level.</p></div>
+          <div class="ad"><p class="ad-k">ML &amp; Research</p><p>PyTorch, Transformers, PEFT/LoRA, vLLM, sparse autoencoders, TransformerLens, detection theory, MATLAB/Octave.</p></div>
+          <div class="ad"><p class="ad-k">Lost</p><p>One semicolon, last seen in a Python file. Sentimental value. No questions asked.</p></div>
+          <div class="ad"><p class="ad-k">Wanted</p><p>Biriyani. Hyderabadi, dum-cooked. Daily. See weather, A1.</p></div>
+          <div class="ad"><p class="ad-k">Free to Good Home</p><p>Sixty-odd public repositories, some dating to 2019. Inspect at <a href="https://github.com/bropal404" target="_blank" rel="noopener">github.com/bropal404</a>.</p></div>
+        </div>
+
+        <div class="letters" id="letters">
+          <p class="kicker">Letters to the Editor</p>
+          <h3 class="hed hed-l">Write In</h3>
+          <p class="dek">The editor reads everything. Replies are faster than the post.</p>
+          <div class="email-row">
+            <span class="email" id="email">gopal.kataria@research.iiit.ac.in</span>
+            <button type="button" class="btn-press" id="copy-email"><span>Copy address</span></button>
+            <span class="copied" id="copied" aria-live="polite"></span>
+          </div>
+          <ul class="links">
+            <li><span>GitHub</span><a href="https://github.com/bropal404" target="_blank" rel="noopener">github.com/bropal404</a></li>
+            <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/gopalkataria" target="_blank" rel="noopener">linkedin.com/in/gopalkataria</a></li>
+            <li><span>Email</span><a href="mailto:gopal.kataria@research.iiit.ac.in">gopal.kataria@research.iiit.ac.in</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <svg class="reg" id="reg" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="11"/><path d="M20 2v36M2 20h36"/><circle cx="20" cy="20" r="5"/></svg>
+      <div class="colophon-text">
+        <p class="colophon-name">The Kataria Chronicle</p>
+        <p>Printed in Hyderabad with three.js on recycled pixels. Set in Newsreader, UnifrakturMaguntia, Anton, Courier Prime and Kalam. <span id="circ-wrap" hidden>Circulation: <b id="circ"></b> copies.</span></p>
+        <p>Photographs are CC0 stand-ins from Openverse (rawpixel, StockSnap) until the real ones arrive; historical photograph by Lala Deen Dayal via Getty Open Content. <a href="img/CREDITS.md">Credits</a> · From the archives: <a href="2025.html">the 2025 edition</a>.</p>
+        <p>© <span id="year">2026</span> Gopal Kataria. <span id="foot-msg">Click the masthead to run the presses again.</span></p>
+      </div>
+      <div class="cmyk" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     </footer>
-
-    <script>
-        fetch('/~gopal.kataria/cgi-bin/vistor-count.py')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('visitor-count').innerText = data.visitor_count;
-            })
-            .catch(error => {
-                document.getElementById('visitor-count').innerText = 'Error';
-                console.error('Error fetching visitor count:', error);
-            });
-    </script>
+  </div>
 </body>
-
 </html>

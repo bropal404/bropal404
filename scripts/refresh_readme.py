@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 
+import argparse
+import textwrap
 import json
 import os
 from collections import Counter
 from datetime import datetime, timedelta, timezone
+from html import escape
+from pathlib import Path
 from urllib.request import Request, urlopen
 
 
 USERNAME = "bropal404"
-TOKEN = os.environ["GH_PAT"]
+TOKEN = os.environ.get("GH_PAT", "")
 
 README = "README.md"
+SVG = Path("assets/status.svg")
 
-PROFILE_REPO_NAME = USERNAME.lower()
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -145,35 +149,43 @@ def get_languages(repos):
     ]
 
 
-def get_latest_repo_and_commit(repos):
-    # Exclude the profile repo itself so a README-only commit doesn't
-    # make this script perpetually report itself as "latest active".
-    candidates = [
-        repo for repo in repos
-        if repo["name"].lower() != PROFILE_REPO_NAME
-    ]
+def get_latest_push(repos):
+    """Most recent public push by the user, with its commit message.
 
-    if not candidates:
-        return None, None
-
-    latest_repo = max(
-        candidates,
-        key=lambda repo: repo.get("pushed_at") or "",
-    )
-
+    Uses the user's own push events, so commits made by the Actions bot
+    (README refreshes) never count, and the profile repo is not excluded.
+    Falls back to the most recently pushed repo if events are unavailable.
+    """
     try:
-        commits = github_get(
-            f"https://api.github.com/repos/"
-            f"{USERNAME}/{latest_repo['name']}/commits?per_page=1"
+        events = github_get(
+            f"https://api.github.com/users/{USERNAME}/events/public?per_page=100"
         )
+        for event in events:
+            if event.get("type") != "PushEvent":
+                continue
 
-        if commits:
-            return latest_repo["name"], commits[0]["commit"]["author"]["date"]
+            full_name = event["repo"]["name"]
+            name = full_name.split("/", 1)[-1]
+            date = event["created_at"]
+            message = None
 
+            try:
+                commit = github_get(
+                    f"https://api.github.com/repos/{full_name}/commits/{event['payload']['head']}"
+                )["commit"]
+                message = commit["message"].strip().splitlines()[0]
+                date = commit["author"]["date"]
+            except Exception as e:
+                print(f"Could not read head commit of {full_name}: {e}")
+
+            return name, date, message
     except Exception as e:
-        print(f"Could not get latest commit: {e}")
+        print(f"Could not read push events: {e}")
 
-    return latest_repo["name"], latest_repo.get("pushed_at")
+    if not repos:
+        return None, None, None
+    latest = max(repos, key=lambda repo: repo.get("pushed_at") or "")
+    return latest["name"], latest.get("pushed_at"), None
 
 
 def get_repo_stats(repos):
@@ -194,6 +206,26 @@ def get_repo_stats(repos):
         "total_stars": total_stars,
         "most_starred_repo": most_starred,
     }
+
+
+def get_activity():
+    """Commits in the last 7 days, plus open issues and pull requests authored by the user."""
+    since = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    query = """
+    query($login: String!, $since: DateTime!) {
+      user(login: $login) {
+        contributionsCollection(from: $since) { totalCommitContributions }
+        issues(states: OPEN) { totalCount }
+        pullRequests(states: OPEN) { totalCount }
+      }
+    }
+    """
+    user = github_graphql(query, {"login": USERNAME, "since": since})["user"]
+    return (
+        user["contributionsCollection"]["totalCommitContributions"],
+        user["issues"]["totalCount"],
+        user["pullRequests"]["totalCount"],
+    )
 
 
 def get_contribution_stats():
@@ -249,27 +281,160 @@ def get_contribution_stats():
         else:
             break
 
-    return current, longest, calendar["totalContributions"]
+    return current, longest
+
+
+def ago(iso):
+    if not iso:
+        return "unknown"
+    delta = datetime.now(timezone.utc) - datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    minutes = int(delta.total_seconds() // 60)
+    for unit, size in (("d", 1440), ("h", 60)):
+        if minutes >= size:
+            return f"{minutes // size}{unit} ago"
+    return f"{max(minutes, 0)}m ago"
+
+
+def fmt(value, suffix=""):
+    return "n/a" if value is None else f"{value}{suffix}"
+
+
+def render_svg(data):
+    gh = data["github"]
+    wx = data["weather"]
+
+    status = data["status"].strip()
+    status = status[0].upper() + status[1:].lower()
+    size = max(34, min(60, int(480 / (0.5 * len(status)))))
+
+    weather = f'{wx["temperature"]}  ·  {wx["condition"]}' if wx["temperature"] else "weather unavailable"
+
+    message = gh.get("last_commit_message") or "no commit message"
+    lines = textwrap.wrap(message, width=34)
+    if len(lines) > 2:
+        lines = lines[:2]
+        lines[1] = lines[1].rstrip(".,;: ")[:31] + "…"
+    msg = "".join(
+        f'<text x="620" y="{214 + n * 25}" class="msg">{"“" if n == 0 else ""}{escape(line)}{"”" if n == len(lines) - 1 else ""}</text>'
+        for n, line in enumerate(lines)
+    )
+
+    stats = [
+        (fmt(gh["total_repos"]), "REPOS"),
+        (fmt(gh["total_stars"]), "STARS"),
+        (fmt(gh.get("commits_last_7_days")), "COMMITS / WEEK"),
+        (fmt(gh.get("open_issues")), "OPEN ISSUES"),
+        (fmt(gh.get("open_prs")), "OPEN PRS"),
+        (fmt(gh["longest_streak"], " d"), "BEST STREAK"),
+    ]
+    cells = "".join(
+        f'<text x="{60 + i * 140}" y="392" class="num">{escape(v)}</text>'
+        f'<text x="{60 + i * 140}" y="350" class="k">{escape(k)}</text>'
+        for i, (v, k) in enumerate(stats)
+    )
+    langs = "   ·   ".join(gh["top_languages"][:5]) or "n/a"
+    repo = escape(gh["latest_active_repo"] or "n/a")
+
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="960" height="490" viewBox="0 0 960 490" role="img" aria-label="Live status for {USERNAME}: {escape(data["status"])}">
+<style>
+text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
+.bg {{ fill:#eceae4; }} .acc {{ fill:#b5472f; }} .hair {{ stroke:#c4c1b7; }} .ring {{ stroke:#d3d0c6; }} .ink {{ stroke:#17181a; }}
+.k {{ font: 600 10.5px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .18em; fill:#7a7870; }}
+.mono {{ font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill:#5c5b55; letter-spacing: .04em; }}
+.msg {{ font-size: 17px; font-style: italic; fill:#4a4943; }}
+.num {{ font-size: 36px; }}
+.status {{ font-size: {size}px; letter-spacing: -1px; }}
+.repo {{ font-size: 32px; font-weight: 700; letter-spacing: -.5px; }}
+@media (prefers-color-scheme: dark) {{
+  text {{ fill:#ecebe5; }}
+  .bg {{ fill:#101113; }} .acc {{ fill:#e07a5f; }} .hair {{ stroke:#2c2d30; }} .ring {{ stroke:#26272a; }} .ink {{ stroke:#ecebe5; }}
+  .k {{ fill:#85857e; }} .mono {{ fill:#a4a49c; }} .msg {{ fill:#b9b8b0; }}
+}}
+</style>
+<rect width="960" height="490" class="bg"/>
+<g fill="none" class="ring" stroke-width="1"><circle cx="960" cy="0" r="70"/><circle cx="960" cy="0" r="115"/><circle cx="960" cy="0" r="160"/></g>
+
+<circle cx="60" cy="58" r="4.5" class="acc"/>
+<text x="76" y="62" class="k">LIVE  ·  @{escape(USERNAME.upper())}</text>
+<line x1="60" y1="88" x2="900" y2="88" class="hair"/>
+
+<text x="60" y="140" class="k">RIGHT NOW</text>
+<text x="58" y="206" class="status">{escape(status)}</text>
+<text x="60" y="246" class="mono">{escape(weather)}</text>
+
+<line x1="580" y1="120" x2="580" y2="262" class="hair"/>
+<text x="620" y="140" class="k">LATEST PUSH  ·  {escape(ago(gh["last_commit"]).upper())}</text>
+<text x="620" y="182" class="repo">{repo}</text>
+{msg}
+
+<line x1="60" y1="318" x2="900" y2="318" class="ink" stroke-width="1.5"/>
+{cells}
+<line x1="60" y1="424" x2="900" y2="424" class="hair"/>
+<text x="60" y="454" class="mono">{escape(langs)}</text>
+<text x="900" y="454" class="mono" text-anchor="end">updated {escape(data["updated"])}</text>
+</svg>
+"""
+
+
+SAMPLE = {
+    "status": "BIRIYANI TIME",
+    "weather": {"location": "Hyderabad", "temperature": "31°C", "condition": "Clear"},
+    "github": {
+        "top_languages": ["Python", "C", "TypeScript", "Go"],
+        "latest_active_repo": "indic-lm",
+        "last_commit": "2026-10-12T11:42:58Z",
+        "last_commit_message": "tokenizer: handle Nepali conjuncts without splitting graphemes",
+        "current_streak": 3,
+        "commits_last_7_days": 14,
+        "open_issues": 3,
+        "open_prs": 1,
+        "longest_streak": 12,
+        "total_repos": 47,
+        "total_stars": 8,
+        "most_starred_repo": {"name": "bropal404", "stars": 1},
+    },
+    "updated": "sample data",
+}
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Refresh README.md and assets/status.svg")
+    parser.add_argument("--test", action="store_true",
+                        help="use sample data (no network, no token) and write to ./test-out/ only")
+    args = parser.parse_args()
+
+    if args.test:
+        out = Path("test-out")
+        out.mkdir(exist_ok=True)
+        (out / "status.svg").write_text(render_svg(SAMPLE), encoding="utf-8")
+        print(f"Wrote {out / 'status.svg'}")
+        return
+
+    if not TOKEN:
+        raise SystemExit("GH_PAT is not set (use --test to try it with sample data)")
+
     now = datetime.now(IST)
 
     repos = get_repositories()
 
     languages = get_languages(repos)
 
-    latest_repo, last_commit = get_latest_repo_and_commit(repos)
+    latest_repo, last_commit, last_message = get_latest_push(repos)
 
     repo_stats = get_repo_stats(repos)
 
     try:
-        current_streak, longest_streak, total_this_year = get_contribution_stats()
+        current_streak, longest_streak = get_contribution_stats()
     except Exception as e:
         print(f"Could not calculate contribution stats: {e}")
         current_streak = None
         longest_streak = None
-        total_this_year = None
+
+    try:
+        commits_week, open_issues, open_prs = get_activity()
+    except Exception as e:
+        print(f"Could not read activity: {e}")
+        commits_week = open_issues = open_prs = None
 
     output = {
         "status": get_status(now.hour),
@@ -278,9 +443,12 @@ def main():
             "top_languages": languages,
             "latest_active_repo": latest_repo,
             "last_commit": last_commit,
+            "last_commit_message": last_message,
             "current_streak": current_streak,
             "longest_streak": longest_streak,
-            "contributions_this_year": total_this_year,
+            "commits_last_7_days": commits_week,
+            "open_issues": open_issues,
+            "open_prs": open_prs,
             "total_repos": repo_stats["total_repos"],
             "total_stars": repo_stats["total_stars"],
             "most_starred_repo": repo_stats["most_starred_repo"],
@@ -288,15 +456,18 @@ def main():
         "updated": now.strftime("%Y-%m-%d %H:%M IST"),
     }
 
+    SVG.parent.mkdir(exist_ok=True)
+    SVG.write_text(render_svg(output), encoding="utf-8")
+
     with open(README, "w", encoding="utf-8") as f:
+        f.write("# Gopal Kataria\n\n")
+        f.write("![Live status](assets/status.svg)\n\n")
+        f.write("Systems, infrastructure and ML at IIIT Hyderabad. "
+                "Portfolio: **The Kataria Chronicle**.\n\n")
+        f.write("<details>\n<summary>Raw data (read by the website)</summary>\n\n")
         f.write("```json\n")
-        json.dump(
-            output,
-            f,
-            indent=2,
-            ensure_ascii=False,
-        )
-        f.write("\n```\n")
+        json.dump(output, f, indent=2, ensure_ascii=False)
+        f.write("\n```\n\n</details>\n")
 
 
 if __name__ == "__main__":

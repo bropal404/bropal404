@@ -46,3 +46,4 @@ bootstrap/css/bootstrap-reboot.css.map
 
 .gitignore
 out copy/
+test-out/
