@@ -36,10 +36,12 @@ def github_get(url):
 
 
 def github_graphql(query, variables):
-    payload = json.dumps({
-        "query": query,
-        "variables": variables,
-    }).encode()
+    payload = json.dumps(
+        {
+            "query": query,
+            "variables": variables,
+        }
+    ).encode()
 
     req = Request(
         "https://api.github.com/graphql",
@@ -62,15 +64,15 @@ def github_graphql(query, variables):
 def get_status(hour):
     if 2 <= hour <= 6:
         return "am I dreaming"
-    if 6 <= hour < 9 :
+    if 6 <= hour < 9:
         return "at the gym"
     if 6 <= hour < 12:
         return "good morning, time to ship"
     if 12 <= hour < 15:
         return "BIRIYANI TIME"
-    if 15 <= hour < 20 :
+    if 15 <= hour < 20:
         return "debugging arc"
-    if 20 <= hour <= 23 :
+    if 20 <= hour <= 23:
         return "Struggling with a deadline"
     return "having a chai without sugar"
 
@@ -91,7 +93,7 @@ def get_weather():
 
         return {
             "location": "Hyderabad",
-            "temperature": f'{current["temp_C"]}°C',
+            "temperature": f"{current['temp_C']}°C",
             "condition": current["weatherDesc"][0]["value"],
         }
 
@@ -123,11 +125,7 @@ def get_repositories():
 
         page += 1
 
-    return [
-        repo
-        for repo in repos
-        if not repo["fork"] and not repo["archived"]
-    ]
+    return [repo for repo in repos if not repo["fork"] and not repo["archived"]]
 
 
 def get_languages(repos):
@@ -143,10 +141,7 @@ def get_languages(repos):
         except Exception as e:
             print(f"Could not read languages for {repo['name']}: {e}")
 
-    return [
-        language
-        for language, _ in totals.most_common(5)
-    ]
+    return [language for language, _ in totals.most_common(5)]
 
 
 def get_latest_push(repos):
@@ -210,7 +205,9 @@ def get_repo_stats(repos):
 
 def get_activity():
     """Commits in the last 7 days, plus open issues and pull requests authored by the user."""
-    since = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    since = (datetime.now(timezone.utc) - timedelta(days=7)).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
     query = """
     query($login: String!, $since: DateTime!) {
       user(login: $login) {
@@ -287,7 +284,9 @@ def get_contribution_stats():
 def ago(iso):
     if not iso:
         return "unknown"
-    delta = datetime.now(timezone.utc) - datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    delta = datetime.now(timezone.utc) - datetime.fromisoformat(
+        iso.replace("Z", "+00:00")
+    )
     minutes = int(delta.total_seconds() // 60)
     for unit, size in (("d", 1440), ("h", 60)):
         if minutes >= size:
@@ -307,7 +306,11 @@ def render_svg(data):
     status = status[0].upper() + status[1:].lower()
     size = max(34, min(60, int(480 / (0.5 * len(status)))))
 
-    weather = f'{wx["temperature"]}  ·  {wx["condition"]}' if wx["temperature"] else "weather unavailable"
+    weather = (
+        f"{wx['temperature']}  ·  {wx['condition']}"
+        if wx["temperature"]
+        else "weather unavailable"
+    )
 
     message = gh.get("last_commit_message") or "no commit message"
     lines = textwrap.wrap(message, width=34)
@@ -342,7 +345,7 @@ def render_svg(data):
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="960" height="490" viewBox="0 0 960 490" role="img" aria-label="Live status for {USERNAME}: {escape(data["status"])}">
 <style>
 text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
-.bg {{ fill:#eceae4; }} .acc {{ fill:#b5472f; }} .hair {{ stroke:#c4c1b7; }} .ring {{ stroke:#d3d0c6; }} .ink {{ stroke:#17181a; }}
+.bg {{ fill:#eceae4; }} .acc {{ fill:#b5472f; }} .hair {{ stroke:#d4d1c7; }} .ring {{ stroke:#d3d0c6; }} .ink {{ stroke:#17181a; }}
 .k {{ font: 600 10.5px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .18em; fill:#7a7870; }}
 .mono {{ font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill:#5c5b55; letter-spacing: .04em; }}
 .msg {{ font-size: 17px; font-style: italic; fill:#4a4943; }}
@@ -351,8 +354,8 @@ text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
 .repo {{ font-size: 32px; font-weight: 700; letter-spacing: -.5px; }}
 @media (prefers-color-scheme: dark) {{
   text {{ fill:#ecebe5; }}
-  .bg {{ fill:#101113; }} .acc {{ fill:#e07a5f; }} .hair {{ stroke:#2c2d30; }} .ring {{ stroke:#26272a; }} .ink {{ stroke:#ecebe5; }}
-  .k {{ fill:#85857e; }} .mono {{ fill:#a4a49c; }} .msg {{ fill:#b9b8b0; }}
+  .bg {{ fill:#101113; }} .acc {{ fill:#6989ff; }} .hair {{ stroke:#2c2d30; }} .ring {{ stroke:#26272a; }} .ink {{ stroke:#ecebe5; }}
+  .k {{ fill:#788898; }} .mono {{ fill:#a4a49c; }} .msg {{ fill:#b9b8b0; }}
 }}
 </style>
 <rect width="960" height="490" class="bg"/>
@@ -402,9 +405,14 @@ SAMPLE = {
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Refresh README.md and assets/status.svg")
-    parser.add_argument("--test", action="store_true",
-                        help="use sample data (no network, no token) and write to ./test-out/ only")
+    parser = argparse.ArgumentParser(
+        description="Refresh README.md and assets/status.svg"
+    )
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="use sample data (no network, no token) and write to ./test-out/ only",
+    )
     args = parser.parse_args()
 
     if args.test:
