@@ -1,6 +1,15 @@
+# Gopal Kataria
+
+![Live status](assets/status.svg)
+
+Systems, infrastructure and ML at IIIT Hyderabad. Portfolio: **The Kataria Chronicle**.
+
+<details>
+<summary>Raw data (read by the website)</summary>
+
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
     "temperature": "21°C",
@@ -11,14 +20,17 @@
       "Jupyter Notebook",
       "Python",
       "C",
-      "TypeScript",
-      "JavaScript"
+      "JavaScript",
+      "TypeScript"
     ],
-    "latest_active_repo": "indic-lm",
-    "last_commit": "2026-10-12T11:42:58Z",
-    "current_streak": 1,
+    "latest_active_repo": "green-customer-insights-platform",
+    "last_commit": "2026-10-12T12:02:34Z",
+    "last_commit_message": "\"173234IST121026\" Save working tree",
+    "current_streak": 2,
     "longest_streak": 12,
-    "contributions_this_year": 320,
+    "commits_last_7_days": 15,
+    "open_issues": 0,
+    "open_prs": 4,
     "total_repos": 47,
     "total_stars": 8,
     "most_starred_repo": {
@@ -26,6 +38,8 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-03 23:13 IST"
+  "updated": "2026-11-04 00:40 IST"
 }
 ```
+
+</details>
