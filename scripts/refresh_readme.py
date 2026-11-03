@@ -362,12 +362,12 @@ text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
 <g fill="none" class="ring" stroke-width="1"><circle cx="960" cy="0" r="70"/><circle cx="960" cy="0" r="115"/><circle cx="960" cy="0" r="160"/></g>
 
 <circle cx="60" cy="58" r="4.5" class="acc"/>
-<text x="76" y="62" class="k">LIVE  ·  @{escape(USERNAME.upper())}</text>
+<text x="76" y="62" class="k">STATUS: @{escape(USERNAME.upper())}</text>
 <line x1="60" y1="88" x2="900" y2="88" class="hair"/>
 
 <text x="60" y="140" class="k">RIGHT NOW</text>
 <text x="58" y="206" class="status">{escape(status)}</text>
-<text x="60" y="246" class="mono">{escape(weather)}</text>
+<text x="60" y="246" class="mono">{escape(weather)} in Hyderabad</text>
 
 <line x1="580" y1="120" x2="580" y2="262" class="hair"/>
 <text x="620" y="140" class="k">LATEST PUSH  ·  {escape(ago(gh["last_commit"]).upper())}</text>
