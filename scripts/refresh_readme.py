@@ -15,7 +15,7 @@ USERNAME = "bropal404"
 TOKEN = os.environ.get("GH_PAT", "")
 
 README = "README.md"
-SVG = Path("assets/status.svg")
+ASSETS = Path("assets")
 
 
 IST = timezone(timedelta(hours=5, minutes=30))
@@ -460,12 +460,16 @@ def main():
         "updated": now.strftime("%Y-%m-%d %H:%M IST"),
     }
 
-    SVG.parent.mkdir(exist_ok=True)
-    SVG.write_text(render_svg(output), encoding="utf-8")
+    # GitHub's image proxy caches by URL, so each refresh gets a new file name.
+    ASSETS.mkdir(exist_ok=True)
+    for old in ASSETS.glob("status*.svg"):
+        old.unlink()
+    svg_path = ASSETS / f"status-{now.strftime('%Y%m%d-%H%M')}.svg"
+    svg_path.write_text(render_svg(output), encoding="utf-8")
 
     with open(README, "w", encoding="utf-8") as f:
         f.write("# Gopal Kataria\n\n")
-        f.write("![Live status](assets/status.svg)\n\n")
+        f.write(f"![Live status]({svg_path.as_posix()})\n\n")
         # Hidden from the rendered page; the website reads this block.
         f.write("<!--\n```json\n")
         json.dump(output, f, indent=2, ensure_ascii=False)
