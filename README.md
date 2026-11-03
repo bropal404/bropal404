@@ -2,11 +2,7 @@
 
 ![Live status](assets/status.svg)
 
-Systems, infrastructure and ML at IIIT Hyderabad. Portfolio: **The Kataria Chronicle**.
-
-<details>
-<summary>Raw data (read by the website)</summary>
-
+<!--
 ```json
 {
   "status": "having a chai without sugar",
@@ -28,7 +24,7 @@ Systems, infrastructure and ML at IIIT Hyderabad. Portfolio: **The Kataria Chron
     "last_commit_message": "\"173234IST121026\" Save working tree",
     "current_streak": 2,
     "longest_streak": 12,
-    "commits_last_7_days": 15,
+    "commits_last_7_days": 17,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 47,
@@ -38,8 +34,7 @@ Systems, infrastructure and ML at IIIT Hyderabad. Portfolio: **The Kataria Chron
       "stars": 1
     }
   },
-  "updated": "2026-11-04 00:40 IST"
+  "updated": "2026-11-04 00:45 IST"
 }
 ```
-
-</details>
+-->
