@@ -476,7 +476,6 @@ def main():
     svg_path.write_text(render_svg(output), encoding="utf-8")
 
     with open(README, "w", encoding="utf-8") as f:
-        f.write("# Gopal Kataria\n\n")
         f.write(f"![Live status]({svg_path.as_posix()})\n\n")
         # Hidden from the rendered page; the website reads this block.
         f.write("<!--\n```json\n")
