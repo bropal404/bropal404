@@ -1,10 +1,10 @@
 ```json
 {
-  "status": "BIRIYANI TIME",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": null,
-    "condition": "unavailable"
+    "temperature": "21°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -16,9 +16,9 @@
     ],
     "latest_active_repo": "indic-lm",
     "last_commit": "2026-10-12T11:42:58Z",
-    "current_streak": 0,
+    "current_streak": 1,
     "longest_streak": 12,
-    "contributions_this_year": 318,
+    "contributions_this_year": 320,
     "total_repos": 47,
     "total_stars": 8,
     "most_starred_repo": {
@@ -26,6 +26,6 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-03 14:55 IST"
+  "updated": "2026-11-03 23:13 IST"
 }
 ```
