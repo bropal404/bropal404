@@ -11,6 +11,7 @@
 | `assets/status-<timestamp>.svg` | The status card shown in `README.md`. Generated; only one exists at a time. |
 | `.github/workflows/refresh-readme.yml` | Runs the script and commits the result. |
 | `.github/workflows/deploy.yml` | On every push to `main`, asks ResearchWeb to sync the site. |
+| `.github/workflows/pages.yml` | On every push to `main` (or by hand), publishes `public/` to GitHub Pages. |
 
 ## The README refresh script
 
