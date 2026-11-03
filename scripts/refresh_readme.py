@@ -333,7 +333,11 @@ def render_svg(data):
         for i, (v, k) in enumerate(stats)
     )
     langs = "   ·   ".join(gh["top_languages"][:5]) or "n/a"
-    repo = escape(gh["latest_active_repo"] or "n/a")
+    repo_name = gh["latest_active_repo"] or "n/a"
+    if len(repo_name) > 32:
+        repo_name = repo_name[:31] + "…"
+    repo_size = max(18, min(32, int(280 / (0.6 * len(repo_name)))))
+    repo = escape(repo_name)
 
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="960" height="490" viewBox="0 0 960 490" role="img" aria-label="Live status for {USERNAME}: {escape(data["status"])}">
 <style>
@@ -364,7 +368,7 @@ text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
 
 <line x1="580" y1="120" x2="580" y2="262" class="hair"/>
 <text x="620" y="140" class="k">LATEST PUSH  ·  {escape(ago(gh["last_commit"]).upper())}</text>
-<text x="620" y="182" class="repo">{repo}</text>
+<text x="620" y="182" class="repo" style="font-size:{repo_size}px">{repo}</text>
 {msg}
 
 <line x1="60" y1="318" x2="900" y2="318" class="ink" stroke-width="1.5"/>
@@ -381,7 +385,7 @@ SAMPLE = {
     "weather": {"location": "Hyderabad", "temperature": "31°C", "condition": "Clear"},
     "github": {
         "top_languages": ["Python", "C", "TypeScript", "Go"],
-        "latest_active_repo": "indic-lm",
+        "latest_active_repo": "green-customer-insights-platform",
         "last_commit": "2026-10-12T11:42:58Z",
         "last_commit_message": "tokenizer: handle Nepali conjuncts without splitting graphemes",
         "current_streak": 3,
@@ -462,12 +466,10 @@ def main():
     with open(README, "w", encoding="utf-8") as f:
         f.write("# Gopal Kataria\n\n")
         f.write("![Live status](assets/status.svg)\n\n")
-        f.write("Systems, infrastructure and ML at IIIT Hyderabad. "
-                "Portfolio: **The Kataria Chronicle**.\n\n")
-        f.write("<details>\n<summary>Raw data (read by the website)</summary>\n\n")
-        f.write("```json\n")
+        # Hidden from the rendered page; the website reads this block.
+        f.write("<!--\n```json\n")
         json.dump(output, f, indent=2, ensure_ascii=False)
-        f.write("\n```\n\n</details>\n")
+        f.write("\n```\n-->\n")
 
 
 if __name__ == "__main__":
