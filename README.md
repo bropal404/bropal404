@@ -1,13 +1,13 @@
-![Live status](assets/status-20261104-1621.svg)
+![Live status](assets/status-20261104-2345.svg)
 
 <!--
 ```json
 {
-  "status": "debugging arc",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "27°C",
-    "condition": "Patchy rain nearby"
+    "temperature": "21°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -22,7 +22,7 @@
     "last_commit_message": "add github pages deployment",
     "current_streak": 2,
     "longest_streak": 12,
-    "commits_last_7_days": 26,
+    "commits_last_7_days": 28,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 47,
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-04 16:21 IST"
+  "updated": "2026-11-04 23:45 IST"
 }
 ```
 -->
