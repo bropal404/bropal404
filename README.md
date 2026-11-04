@@ -1,13 +1,13 @@
-![Live status](assets/status-20261104-2345.svg)
+![Live status](assets/status-20261105-0526.svg)
 
 <!--
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
     "temperature": "21°C",
-    "condition": "Overcast "
+    "condition": "Mist"
   },
   "github": {
     "top_languages": [
@@ -20,7 +20,7 @@
     "latest_active_repo": "bropal404",
     "last_commit": "2026-11-03T19:34:42Z",
     "last_commit_message": "add github pages deployment",
-    "current_streak": 2,
+    "current_streak": 0,
     "longest_streak": 12,
     "commits_last_7_days": 28,
     "open_issues": 0,
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-04 23:45 IST"
+  "updated": "2026-11-05 05:26 IST"
 }
 ```
 -->
