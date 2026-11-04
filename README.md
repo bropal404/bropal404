@@ -1,13 +1,13 @@
-![Live status](assets/status-20261104-1131.svg)
+![Live status](assets/status-20261104-1621.svg)
 
 <!--
 ```json
 {
-  "status": "good morning, time to ship",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "24°C",
-    "condition": "Overcast "
+    "temperature": "27°C",
+    "condition": "Patchy rain nearby"
   },
   "github": {
     "top_languages": [
@@ -17,12 +17,12 @@
       "JavaScript",
       "TypeScript"
     ],
-    "latest_active_repo": "green-customer-insights-platform",
-    "last_commit": "2026-10-12T12:02:34Z",
-    "last_commit_message": "\"173234IST121026\" Save working tree",
+    "latest_active_repo": "bropal404",
+    "last_commit": "2026-11-03T19:34:42Z",
+    "last_commit_message": "add github pages deployment",
     "current_streak": 2,
     "longest_streak": 12,
-    "commits_last_7_days": 25,
+    "commits_last_7_days": 26,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 47,
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-04 11:31 IST"
+  "updated": "2026-11-04 16:21 IST"
 }
 ```
 -->
