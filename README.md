@@ -1,13 +1,13 @@
-![Live status](assets/status-20261108-0034.svg)
+![Live status](assets/status-20261108-0433.svg)
 
 <!--
 ```json
 {
-  "status": "having a chai without sugar",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "22°C",
-    "condition": "Overcast "
+    "temperature": "21°C",
+    "condition": "Partly Cloudy "
   },
   "github": {
     "top_languages": [
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-08 00:34 IST"
+  "updated": "2026-11-08 04:33 IST"
 }
 ```
 -->
