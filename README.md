@@ -1,13 +1,13 @@
-![Live status](assets/status-20261108-0433.svg)
+![Live status](assets/status-20261108-0814.svg)
 
 <!--
 ```json
 {
-  "status": "am I dreaming",
+  "status": "at the gym",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "21°C",
-    "condition": "Partly Cloudy "
+    "temperature": "22°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -22,7 +22,7 @@
     "last_commit_message": "Update refresh-readme.yml",
     "current_streak": 0,
     "longest_streak": 12,
-    "commits_last_7_days": 26,
+    "commits_last_7_days": 19,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 47,
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-08 04:33 IST"
+  "updated": "2026-11-08 08:14 IST"
 }
 ```
 -->
