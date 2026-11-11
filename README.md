@@ -1,13 +1,13 @@
-![Live status](assets/status-20261111-1355.svg)
+![Live status](assets/status-20261111-2208.svg)
 
 <!--
 ```json
 {
-  "status": "BIRIYANI TIME",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "29°C",
-    "condition": "Sunny"
+    "temperature": "20°C",
+    "condition": "Clear "
   },
   "github": {
     "top_languages": [
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-11 13:55 IST"
+  "updated": "2026-11-11 22:08 IST"
 }
 ```
 -->
