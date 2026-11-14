@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="490" viewBox="0 0 960 490" role="img" aria-label="Live status for bropal404: good morning, time to ship">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="490" viewBox="0 0 960 490" role="img" aria-label="Live status for bropal404: debugging arc">
 <style>
 text { fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }
 .bg { fill:#eceae4; } .acc { fill:#b5472f; } .hair { stroke:#d4d1c7; } .ring { stroke:#d3d0c6; } .ink { stroke:#17181a; }
@@ -6,7 +6,7 @@ text { fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }
 .mono { font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill:#5c5b55; letter-spacing: .04em; }
 .msg { font-size: 17px; font-style: italic; fill:#4a4943; }
 .num { font-size: 36px; }
-.status { font-size: 36px; letter-spacing: -1px; }
+.status { font-size: 60px; letter-spacing: -1px; }
 .repo { font-size: 32px; font-weight: 700; letter-spacing: -.5px; }
 @media (prefers-color-scheme: dark) {
   text { fill:#ecebe5; }
@@ -22,11 +22,11 @@ text { fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }
 <line x1="60" y1="88" x2="900" y2="88" class="hair"/>
 
 <text x="60" y="140" class="k">RIGHT NOW</text>
-<text x="58" y="206" class="status">Good morning, time to ship</text>
-<text x="60" y="246" class="mono">25°C  ·  Partly Cloudy  in Hyderabad</text>
+<text x="58" y="206" class="status">Debugging arc</text>
+<text x="60" y="246" class="mono">29°C  ·  Partly Cloudy  in Hyderabad</text>
 
 <line x1="580" y1="120" x2="580" y2="262" class="hair"/>
-<text x="620" y="140" class="k">LATEST PUSH  ·  9D AGO</text>
+<text x="620" y="140" class="k">LATEST PUSH  ·  10D AGO</text>
 <text x="620" y="182" class="repo" style="font-size:32px">bropal404</text>
 <text x="620" y="214" class="msg">“Update refresh-readme.yml”</text>
 
@@ -34,5 +34,5 @@ text { fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }
 <text x="60" y="392" class="num">47</text><text x="60" y="350" class="k">REPOS</text><text x="200" y="392" class="num">8</text><text x="200" y="350" class="k">STARS</text><text x="340" y="392" class="num">0</text><text x="340" y="350" class="k">COMMITS / WEEK</text><text x="480" y="392" class="num">0</text><text x="480" y="350" class="k">OPEN ISSUES</text><text x="620" y="392" class="num">4</text><text x="620" y="350" class="k">OPEN PRS</text><text x="760" y="392" class="num">12 d</text><text x="760" y="350" class="k">BEST STREAK</text>
 <line x1="60" y1="424" x2="900" y2="424" class="hair"/>
 <text x="60" y="454" class="mono">Jupyter Notebook   ·   Python   ·   C   ·   JavaScript   ·   TypeScript</text>
-<text x="900" y="454" class="mono" text-anchor="end">updated 2026-11-14 09:50 IST</text>
+<text x="900" y="454" class="mono" text-anchor="end">updated 2026-11-14 17:16 IST</text>
 </svg>
