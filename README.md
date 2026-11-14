@@ -1,13 +1,13 @@
-![Live status](assets/status-20261114-2250.svg)
+![Live status](assets/status-20261115-0311.svg)
 
 <!--
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "21°C",
-    "condition": "Clear "
+    "temperature": "19°C",
+    "condition": "Smoky haze"
   },
   "github": {
     "top_languages": [
@@ -20,9 +20,9 @@
     "latest_active_repo": "bropal404",
     "last_commit": "2026-11-04T10:18:24Z",
     "last_commit_message": "Update refresh-readme.yml",
-    "current_streak": 0,
+    "current_streak": 1,
     "longest_streak": 12,
-    "commits_last_7_days": 0,
+    "commits_last_7_days": 2,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 47,
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-14 22:50 IST"
+  "updated": "2026-11-15 03:11 IST"
 }
 ```
 -->
