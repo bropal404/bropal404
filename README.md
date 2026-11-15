@@ -1,13 +1,13 @@
-![Live status](assets/status-20261115-1358.svg)
+![Live status](assets/status-20261115-2123.svg)
 
 <!--
 ```json
 {
-  "status": "BIRIYANI TIME",
+  "status": "Struggling with a deadline",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "29°C",
-    "condition": "Partly Cloudy "
+    "temperature": "21°C",
+    "condition": "Overcast "
   },
   "github": {
     "top_languages": [
@@ -22,9 +22,9 @@
     "last_commit_message": "Update refresh-readme.yml",
     "current_streak": 1,
     "longest_streak": 12,
-    "commits_last_7_days": 2,
+    "commits_last_7_days": 13,
     "open_issues": 0,
-    "open_prs": 4,
+    "open_prs": 5,
     "total_repos": 47,
     "total_stars": 8,
     "most_starred_repo": {
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-15 13:58 IST"
+  "updated": "2026-11-15 21:23 IST"
 }
 ```
 -->
