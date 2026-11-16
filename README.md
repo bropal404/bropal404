@@ -1,4 +1,4 @@
-![Live status](assets/status-20261116-0211.svg)
+![Live status](assets/status-20261116-0554.svg)
 
 <!--
 ```json
@@ -6,7 +6,7 @@
   "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "19°C",
+    "temperature": "18°C",
     "condition": "Smoky haze"
   },
   "github": {
@@ -22,17 +22,17 @@
     "last_commit_message": "Update refresh-readme.yml",
     "current_streak": 3,
     "longest_streak": 12,
-    "commits_last_7_days": 53,
+    "commits_last_7_days": 41,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 48,
     "total_stars": 9,
     "most_starred_repo": {
-      "name": "lma-sae-rag-proj",
+      "name": "bropal404",
       "stars": 1
     }
   },
-  "updated": "2026-11-16 02:11 IST"
+  "updated": "2026-11-16 05:54 IST"
 }
 ```
 -->
