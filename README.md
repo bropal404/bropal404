@@ -1,12 +1,12 @@
-![Live status](assets/status-20261117-1514.svg)
+![Live status](assets/status-20261118-0016.svg)
 
 <!--
 ```json
 {
-  "status": "debugging arc",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "30°C",
+    "temperature": "20°C",
     "condition": "Cloudy "
   },
   "github": {
@@ -20,7 +20,7 @@
     "latest_active_repo": "bropal404",
     "last_commit": "2026-11-04T10:18:24Z",
     "last_commit_message": "Update refresh-readme.yml",
-    "current_streak": 4,
+    "current_streak": 0,
     "longest_streak": 12,
     "commits_last_7_days": 34,
     "open_issues": 0,
@@ -32,7 +32,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-17 15:14 IST"
+  "updated": "2026-11-18 00:16 IST"
 }
 ```
 -->
