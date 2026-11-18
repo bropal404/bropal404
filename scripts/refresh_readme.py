@@ -14,11 +14,19 @@ from urllib.request import Request, urlopen
 USERNAME = "bropal404"
 TOKEN = os.environ.get("GH_PAT", "")
 
+# The profile repo (README refreshes etc.) never counts as "latest push" or toward commit totals.
+EXCLUDED_REPO = "bropal404"
+
 README = "README.md"
 ASSETS = Path("assets")
 
 
 IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def is_excluded(repo_name):
+    """True for the profile repo. Accepts 'name' or 'owner/name'."""
+    return repo_name.split("/")[-1].lower() == EXCLUDED_REPO.lower()
 
 
 def github_get(url):
@@ -148,8 +156,9 @@ def get_latest_push(repos):
     """Most recent public push by the user, with its commit message.
 
     Uses the user's own push events, so commits made by the Actions bot
-    (README refreshes) never count, and the profile repo is not excluded.
-    Falls back to the most recently pushed repo if events are unavailable.
+    (README refreshes) never count. The profile repo (EXCLUDED_REPO) is
+    skipped entirely, both in events and in the fallback.
+    Falls back to the most recently pushed other repo if events are unavailable.
     """
     try:
         events = github_get(
@@ -160,6 +169,9 @@ def get_latest_push(repos):
                 continue
 
             full_name = event["repo"]["name"]
+            if is_excluded(full_name):
+                continue
+
             name = full_name.split("/", 1)[-1]
             date = event["created_at"]
             message = None
@@ -177,9 +189,10 @@ def get_latest_push(repos):
     except Exception as e:
         print(f"Could not read push events: {e}")
 
-    if not repos:
+    candidates = [repo for repo in repos if not is_excluded(repo["name"])]
+    if not candidates:
         return None, None, None
-    latest = max(repos, key=lambda repo: repo.get("pushed_at") or "")
+    latest = max(candidates, key=lambda repo: repo.get("pushed_at") or "")
     return latest["name"], latest.get("pushed_at"), None
 
 
@@ -204,28 +217,45 @@ def get_repo_stats(repos):
 
 
 def get_activity():
-    """Commits in the last 7 days, plus open issues and pull requests authored by the user."""
+    """Commits in the last 7 days (profile repo excluded), plus open issues and PRs."""
     since = (datetime.now(timezone.utc) - timedelta(days=7)).strftime(
         "%Y-%m-%dT%H:%M:%SZ"
     )
     query = """
     query($login: String!, $since: DateTime!) {
       user(login: $login) {
-        contributionsCollection(from: $since) { totalCommitContributions }
+        contributionsCollection(from: $since) {
+          commitContributionsByRepository(maxRepositories: 100) {
+            repository { name owner { login } }
+            contributions { totalCount }
+          }
+        }
         issues(states: OPEN) { totalCount }
         pullRequests(states: OPEN) { totalCount }
       }
     }
     """
     user = github_graphql(query, {"login": USERNAME, "since": since})["user"]
+
+    commits = sum(
+        entry["contributions"]["totalCount"]
+        for entry in user["contributionsCollection"]["commitContributionsByRepository"]
+        if not is_excluded(entry["repository"]["name"])
+    )
+
     return (
-        user["contributionsCollection"]["totalCommitContributions"],
+        commits,
         user["issues"]["totalCount"],
         user["pullRequests"]["totalCount"],
     )
 
 
 def get_contribution_stats():
+    """Current streak, longest streak, and the last 30 days of daily counts.
+
+    The contribution calendar can't be filtered per repo, so these include
+    every repo GitHub credits to the account.
+    """
     query = """
     query($login: String!) {
       user(login: $login) {
@@ -278,7 +308,7 @@ def get_contribution_stats():
         else:
             break
 
-    return current, longest
+    return current, longest, counts[-30:]
 
 
 def ago(iso):
@@ -302,9 +332,21 @@ def render_svg(data):
     gh = data["github"]
     wx = data["weather"]
 
+    # ---- status headline (typed in, then a blinking cursor) -----------------
     status = data["status"].strip()
     status = status[0].upper() + status[1:].lower()
     size = max(34, min(60, int(480 / (0.5 * len(status)))))
+    n_chars = len(status)
+    type_w = min(500, round(0.5 * n_chars * size))  # textLength pins the real width
+    type_delay = 0.7
+    type_dur = round(n_chars * 0.07, 2)
+    after_type = round(type_delay + type_dur, 2)
+    cover_w = type_w + 8
+    cover_right = 56 + cover_w
+    cursor_y = round(206 - size * 0.82)
+    cursor_h = round(size * 0.95)
+    cover_y = round(206 - size)
+    cover_h = round(size * 1.35)
 
     weather = (
         f"{wx['temperature']}  ·  {wx['condition']}"
@@ -312,6 +354,7 @@ def render_svg(data):
         else "weather unavailable"
     )
 
+    # ---- latest push message -------------------------------------------------
     message = gh.get("last_commit_message") or "no commit message"
     lines = textwrap.wrap(message, width=34)
     if len(lines) > 2:
@@ -322,6 +365,7 @@ def render_svg(data):
         for n, line in enumerate(lines)
     )
 
+    # ---- stat row ------------------------------------------------------------
     stats = [
         (fmt(gh["total_repos"]), "REPOS"),
         (fmt(gh["total_stars"]), "STARS"),
@@ -331,10 +375,30 @@ def render_svg(data):
         (fmt(gh["longest_streak"], " d"), "BEST STREAK"),
     ]
     cells = "".join(
+        f'<g class="in" style="--d:{1.25 + i * 0.1:.2f}s">'
         f'<text x="{60 + i * 140}" y="392" class="num">{escape(v)}</text>'
         f'<text x="{60 + i * 140}" y="350" class="k">{escape(k)}</text>'
+        f"</g>"
         for i, (v, k) in enumerate(stats)
     )
+
+    # ---- 30-day activity strip -----------------------------------------------
+    daily = (gh.get("daily_contributions_30d") or [])[-30:]
+    peak = max(daily, default=0)
+    bars = ""
+    for i, count in enumerate(daily):
+        height = 3 if count == 0 else 6 + 30 * count / peak
+        fill = "acc" if i == len(daily) - 1 else "inkf"
+        faint = ' style="opacity:.22;' if count == 0 else ' style="'
+        bars += (
+            f'<rect class="bar {fill}" x="{60 + i * 28}" y="{494 - height:.1f}" '
+            f'width="20" height="{height:.1f}" rx="1.5"'
+            f'{faint}--d:{2.15 + i * 0.025:.3f}s"/>'
+        )
+    strip_label = (
+        f"LAST {len(daily)} DAYS  ·  {sum(daily)} CONTRIBUTIONS" if daily else "ACTIVITY  ·  N/A"
+    )
+
     langs = "   ·   ".join(gh["top_languages"][:5]) or "n/a"
     repo_name = gh["latest_active_repo"] or "n/a"
     if len(repo_name) > 32:
@@ -342,10 +406,11 @@ def render_svg(data):
     repo_size = max(18, min(32, int(280 / (0.6 * len(repo_name)))))
     repo = escape(repo_name)
 
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="960" height="490" viewBox="0 0 960 490" role="img" aria-label="Live status for {USERNAME}: {escape(data["status"])}">
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="960" height="570" viewBox="0 0 960 570" role="img" aria-label="Live status for {USERNAME}: {escape(data["status"])}">
 <style>
 text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
-.bg {{ fill:#eceae4; }} .acc {{ fill:#b5472f; }} .hair {{ stroke:#d4d1c7; }} .ring {{ stroke:#d3d0c6; }} .ink {{ stroke:#17181a; }}
+.bg {{ fill:#eceae4; }} .acc {{ fill:#b5472f; }} .accs {{ stroke:#b5472f; }} .inkf {{ fill:#17181a; }}
+.hair {{ stroke:#d4d1c7; }} .ring {{ stroke:#d3d0c6; }} .ink {{ stroke:#17181a; }}
 .k {{ font: 600 10.5px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; letter-spacing: .18em; fill:#7a7870; }}
 .mono {{ font: 13px ui-monospace, 'SF Mono', Menlo, Consolas, monospace; fill:#5c5b55; letter-spacing: .04em; }}
 .msg {{ font-size: 17px; font-style: italic; fill:#4a4943; }}
@@ -354,31 +419,73 @@ text {{ fill:#17181a; font-family: Georgia, 'Times New Roman', serif; }}
 .repo {{ font-size: 32px; font-weight: 700; letter-spacing: -.5px; }}
 @media (prefers-color-scheme: dark) {{
   text {{ fill:#ecebe5; }}
-  .bg {{ fill:#101113; }} .acc {{ fill:#6989ff; }} .hair {{ stroke:#2c2d30; }} .ring {{ stroke:#26272a; }} .ink {{ stroke:#ecebe5; }}
+  .bg {{ fill:#101113; }} .acc {{ fill:#6989ff; }} .accs {{ stroke:#6989ff; }} .inkf {{ fill:#ecebe5; }}
+  .hair {{ stroke:#2c2d30; }} .ring {{ stroke:#26272a; }} .ink {{ stroke:#ecebe5; }}
   .k {{ fill:#788898; }} .mono {{ fill:#a4a49c; }} .msg {{ fill:#b9b8b0; }}
 }}
+
+/* ---- motion: one load sequence, then only ambient loops ---- */
+.in   {{ animation: in .7s ease-out both; animation-delay: var(--d, 0s); }}
+.draw {{ animation: draw .9s cubic-bezier(.65,0,.35,1) both; animation-delay: var(--d, 0s); }}
+.bar  {{ transform-box: fill-box; transform-origin: 50% 100%; animation: grow .6s cubic-bezier(.2,.8,.2,1) both; animation-delay: var(--d, 0s); }}
+.cover  {{ transform-origin: {cover_right}px 0px; animation: reveal {type_dur}s steps({n_chars}, end) {type_delay}s both; }}
+.cursor {{ animation: slide {type_dur}s steps({n_chars}, end) {type_delay}s both, blink 1.05s steps(1) {after_type}s infinite; }}
+.ping   {{ transform-origin: 60px 58px; animation: ping 2.6s ease-out infinite; }}
+.radar  {{ fill:none; stroke-width:1; vector-effect: non-scaling-stroke; transform-origin: 960px 0px; animation: radar 9s ease-out infinite; }}
+
+@keyframes in     {{ from {{ opacity:0 }} to {{ opacity:1 }} }}
+@keyframes draw   {{ from {{ stroke-dasharray:1; stroke-dashoffset:1 }} to {{ stroke-dasharray:1; stroke-dashoffset:0 }} }}
+@keyframes grow   {{ from {{ transform: scaleY(0) }} to {{ transform: scaleY(1) }} }}
+@keyframes reveal {{ from {{ transform: scaleX(1) }} to {{ transform: scaleX(0) }} }}
+@keyframes slide  {{ from {{ transform: translateX(0) }} to {{ transform: translateX({type_w}px) }} }}
+@keyframes blink  {{ 50% {{ opacity:0 }} }}
+@keyframes ping   {{ from {{ transform: scale(1); opacity:.75 }} to {{ transform: scale(3.6); opacity:0 }} }}
+@keyframes radar  {{ from {{ transform: scale(.15); opacity:.9 }} to {{ transform: scale(1.7); opacity:0 }} }}
+
+@media (prefers-reduced-motion: reduce) {{
+  * {{ animation: none !important; }}
+  .cover, .cursor, .ping, .radar {{ display:none; }}
+}}
 </style>
-<rect width="960" height="490" class="bg"/>
+<rect width="960" height="570" class="bg"/>
+
 <g fill="none" class="ring" stroke-width="1"><circle cx="960" cy="0" r="70"/><circle cx="960" cy="0" r="115"/><circle cx="960" cy="0" r="160"/></g>
+<g>
+<circle class="radar ring" cx="960" cy="0" r="160"/>
+<circle class="radar ring" cx="960" cy="0" r="160" style="animation-delay:-3s"/>
+<circle class="radar ring" cx="960" cy="0" r="160" style="animation-delay:-6s"/>
+</g>
 
+<circle class="ping accs" cx="60" cy="58" r="4.5" fill="none" stroke-width="1.5"/>
 <circle cx="60" cy="58" r="4.5" class="acc"/>
-<text x="76" y="62" class="k">STATUS: @{escape(USERNAME.upper())}</text>
-<line x1="60" y1="88" x2="900" y2="88" class="hair"/>
+<text x="76" y="62" class="k in" style="--d:.1s">STATUS: @{escape(USERNAME.upper())}</text>
+<line x1="60" y1="88" x2="900" y2="88" class="hair draw" pathLength="1" style="--d:.15s"/>
 
-<text x="60" y="140" class="k">RIGHT NOW</text>
-<text x="58" y="206" class="status">{escape(status)}</text>
-<text x="60" y="246" class="mono">{escape(weather)} in Hyderabad</text>
+<text x="60" y="140" class="k in" style="--d:.35s">RIGHT NOW</text>
+<text x="58" y="206" class="status" textLength="{type_w}" lengthAdjust="spacing">{escape(status)}</text>
+<rect class="bg cover" x="56" y="{cover_y}" width="{cover_w}" height="{cover_h}"/>
+<rect class="acc cursor" x="58" y="{cursor_y}" width="3" height="{cursor_h}"/>
+<text x="60" y="246" class="mono in" style="--d:{after_type}s">{escape(weather)} in Hyderabad</text>
 
-<line x1="580" y1="120" x2="580" y2="262" class="hair"/>
+<line x1="580" y1="120" x2="580" y2="262" class="hair draw" pathLength="1" style="--d:.5s"/>
+<g class="in" style="--d:.95s">
 <text x="620" y="140" class="k">LATEST PUSH  ·  {escape(ago(gh["last_commit"]).upper())}</text>
 <text x="620" y="182" class="repo" style="font-size:{repo_size}px">{repo}</text>
 {msg}
+</g>
 
-<line x1="60" y1="318" x2="900" y2="318" class="ink" stroke-width="1.5"/>
+<line x1="60" y1="318" x2="900" y2="318" class="ink draw" pathLength="1" stroke-width="1.5" style="--d:1s"/>
 {cells}
-<line x1="60" y1="424" x2="900" y2="424" class="hair"/>
-<text x="60" y="454" class="mono">{escape(langs)}</text>
-<text x="900" y="454" class="mono" text-anchor="end">updated {escape(data["updated"])}</text>
+<line x1="60" y1="424" x2="900" y2="424" class="hair draw" pathLength="1" style="--d:1.9s"/>
+
+<text x="60" y="448" class="k in" style="--d:2s">{escape(strip_label)}</text>
+{bars}
+
+<line x1="60" y1="514" x2="900" y2="514" class="hair draw" pathLength="1" style="--d:2.7s"/>
+<g class="in" style="--d:2.9s">
+<text x="60" y="544" class="mono">{escape(langs)}</text>
+<text x="900" y="544" class="mono" text-anchor="end">updated {escape(data["updated"])}</text>
+</g>
 </svg>
 """
 
@@ -399,6 +506,10 @@ SAMPLE = {
         "total_repos": 47,
         "total_stars": 8,
         "most_starred_repo": {"name": "bropal404", "stars": 1},
+        "daily_contributions_30d": [
+            0, 2, 5, 1, 0, 0, 3, 6, 4, 2, 0, 1, 7, 9, 3,
+            0, 0, 2, 4, 8, 5, 1, 0, 3, 6, 2, 0, 4, 5, 3,
+        ],
     },
     "updated": "sample data",
 }
@@ -436,11 +547,12 @@ def main():
     repo_stats = get_repo_stats(repos)
 
     try:
-        current_streak, longest_streak = get_contribution_stats()
+        current_streak, longest_streak, daily = get_contribution_stats()
     except Exception as e:
         print(f"Could not calculate contribution stats: {e}")
         current_streak = None
         longest_streak = None
+        daily = []
 
     try:
         commits_week, open_issues, open_prs = get_activity()
@@ -458,6 +570,7 @@ def main():
             "last_commit_message": last_message,
             "current_streak": current_streak,
             "longest_streak": longest_streak,
+            "daily_contributions_30d": daily,
             "commits_last_7_days": commits_week,
             "open_issues": open_issues,
             "open_prs": open_prs,
