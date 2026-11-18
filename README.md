@@ -1,12 +1,12 @@
-![Live status](assets/status-20261118-0651.svg)
+![Live status](assets/status-20261118-1116.svg)
 
 <!--
 ```json
 {
-  "status": "am I dreaming",
+  "status": "good morning, time to ship",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "20°C",
+    "temperature": "29°C",
     "condition": "Smoky haze"
   },
   "github": {
@@ -17,11 +17,43 @@
       "JavaScript",
       "TypeScript"
     ],
-    "latest_active_repo": "bropal404",
-    "last_commit": "2026-11-04T10:18:24Z",
-    "last_commit_message": "Update refresh-readme.yml",
-    "current_streak": 0,
+    "latest_active_repo": "lma-sae-rag-proj",
+    "last_commit": "2026-11-15T17:25:21Z",
+    "last_commit_message": null,
+    "current_streak": 5,
     "longest_streak": 12,
+    "daily_contributions_30d": [
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      1,
+      0,
+      3,
+      0,
+      2,
+      11,
+      0,
+      0,
+      3,
+      15,
+      0,
+      2,
+      0,
+      12,
+      10,
+      0,
+      4,
+      0,
+      0,
+      2,
+      25,
+      4,
+      2,
+      1
+    ],
     "commits_last_7_days": 34,
     "open_issues": 0,
     "open_prs": 4,
@@ -32,7 +64,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-18 06:51 IST"
+  "updated": "2026-11-18 11:16 IST"
 }
 ```
 -->
