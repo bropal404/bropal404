@@ -1,12 +1,12 @@
-![Live status](assets/status-20261119-2237.svg)
+![Live status](assets/status-20261120-0522.svg)
 
 <!--
 ```json
 {
-  "status": "Struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "20°C",
+    "temperature": "16°C",
     "condition": "Smoky haze"
   },
   "github": {
@@ -23,7 +23,6 @@
     "current_streak": 0,
     "longest_streak": 12,
     "daily_contributions_30d": [
-      1,
       0,
       1,
       0,
@@ -52,6 +51,7 @@
       4,
       2,
       2,
+      0,
       0
     ],
     "commits_last_7_days": 30,
@@ -64,7 +64,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-19 22:37 IST"
+  "updated": "2026-11-20 05:22 IST"
 }
 ```
 -->
