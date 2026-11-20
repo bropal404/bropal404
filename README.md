@@ -1,13 +1,13 @@
-![Live status](assets/status-20261120-1953.svg)
+![Live status](assets/status-20261121-0328.svg)
 
 <!--
 ```json
 {
-  "status": "debugging arc",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "26°C",
-    "condition": "Cloudy "
+    "temperature": "20°C",
+    "condition": "Smoky haze"
   },
   "github": {
     "top_languages": [
@@ -23,7 +23,6 @@
     "current_streak": 0,
     "longest_streak": 12,
     "daily_contributions_30d": [
-      0,
       1,
       0,
       0,
@@ -52,6 +51,7 @@
       2,
       2,
       0,
+      0,
       0
     ],
     "commits_last_7_days": 30,
@@ -64,7 +64,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-20 19:53 IST"
+  "updated": "2026-11-21 03:28 IST"
 }
 ```
 -->
