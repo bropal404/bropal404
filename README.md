@@ -1,12 +1,12 @@
-![Live status](assets/status-20261121-0328.svg)
+![Live status](assets/status-20261121-0830.svg)
 
 <!--
 ```json
 {
-  "status": "am I dreaming",
+  "status": "at the gym",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "20°C",
+    "temperature": "24°C",
     "condition": "Smoky haze"
   },
   "github": {
@@ -64,7 +64,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-21 03:28 IST"
+  "updated": "2026-11-21 08:30 IST"
 }
 ```
 -->
