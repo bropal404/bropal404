@@ -1,13 +1,13 @@
-![Live status](assets/status-20261121-0830.svg)
+![Live status](assets/status-20261121-1719.svg)
 
 <!--
 ```json
 {
-  "status": "at the gym",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "24°C",
-    "condition": "Smoky haze"
+    "temperature": "27°C",
+    "condition": "Sunny"
   },
   "github": {
     "top_languages": [
@@ -64,7 +64,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-21 08:30 IST"
+  "updated": "2026-11-21 17:19 IST"
 }
 ```
 -->
