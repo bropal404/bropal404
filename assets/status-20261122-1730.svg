@@ -109,7 +109,7 @@ text { fill:#221d16; font-family:'Newsreader', Georgia, 'Times New Roman', serif
 <text x="58" y="196" class="status">Debugging arc</text>
 <rect class="bg cover" x="58" y="140" width="391" height="80"/>
 <rect class="acc cursor" x="60" y="150" width="3" height="54"/>
-<text x="60" y="236" class="mono in" style="--d:1.61s">30°C  ·  partly cloudy in Hyderabad</text>
+<text x="60" y="236" class="mono in" style="--d:1.61s">27°C  ·  partly cloudy in Hyderabad</text>
 
 <line x1="560" y1="112" x2="560" y2="262" class="hair"/>
 <g class="in" style="--d:.95s">
@@ -134,6 +134,6 @@ text { fill:#221d16; font-family:'Newsreader', Georgia, 'Times New Roman', serif
 
 <g class="in" style="--d:2.9s">
 <rect x="60.0" y="566" width="749.8" height="4" class="acc" opacity="1"/><rect x="811.8" y="566" width="51.8" height="4" class="inkf" opacity="0.7"/><rect x="865.6" y="566" width="9.8" height="4" class="inkf" opacity="0.45"/><rect x="877.3" y="566" width="3.0" height="4" class="inkf" opacity="0.28"/><rect x="882.4" y="566" width="2.2" height="4" class="inkf" opacity="0.16"/><rect x="886.6" y="566" width="13.4" height="4" class="inkf" opacity=".08"/><rect x="60" y="589" width="8" height="8" class="acc" opacity="1"/><text x="74" y="598" class="mono">Jupyter Notebook 90%</text><rect x="250" y="589" width="8" height="8" class="inkf" opacity="0.7"/><text x="264" y="598" class="mono">Python 6%</text><rect x="355" y="589" width="8" height="8" class="inkf" opacity="0.45"/><text x="369" y="598" class="mono">C 1%</text><rect x="422" y="589" width="8" height="8" class="inkf" opacity="0.28"/><text x="436" y="598" class="mono">JavaScript &lt;1%</text>
-<text x="900" y="598" class="mono" text-anchor="end">updated 2026-11-22 16:34 IST</text>
+<text x="900" y="598" class="mono" text-anchor="end">updated 2026-11-22 17:30 IST</text>
 </g>
 </svg>
