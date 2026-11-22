@@ -1,13 +1,13 @@
-![Live status](assets/status-20261122-0900.svg)
+![Live status](assets/status-20261122-1634.svg)
 
 <!--
 ```json
 {
-  "status": "good morning, time to ship",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "24°C",
-    "condition": "Smoky haze"
+    "temperature": "30°C",
+    "condition": "Partly Cloudy"
   },
   "github": {
     "top_languages": [
@@ -17,10 +17,17 @@
       "JavaScript",
       "TypeScript"
     ],
+    "language_share": {
+      "Jupyter Notebook": 89.5,
+      "Python": 6.4,
+      "C": 1.4,
+      "JavaScript": 0.6,
+      "TypeScript": 0.5
+    },
     "latest_active_repo": "lma-sae-rag-proj",
     "last_commit": "2026-11-15T17:25:21Z",
     "last_commit_message": null,
-    "current_streak": 0,
+    "current_streak": 1,
     "longest_streak": 12,
     "daily_contributions_30d": [
       0,
@@ -52,7 +59,7 @@
       0,
       0,
       0,
-      0
+      1
     ],
     "commits_last_7_days": 28,
     "open_issues": 0,
@@ -64,7 +71,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-22 09:00 IST"
+  "updated": "2026-11-22 16:34 IST"
 }
 ```
 -->
