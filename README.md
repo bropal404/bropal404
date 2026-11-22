@@ -1,12 +1,12 @@
-![Live status](assets/status-20261122-0506.svg)
+![Live status](assets/status-20261122-0900.svg)
 
 <!--
 ```json
 {
-  "status": "am I dreaming",
+  "status": "good morning, time to ship",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "20°C",
+    "temperature": "24°C",
     "condition": "Smoky haze"
   },
   "github": {
@@ -54,7 +54,7 @@
       0,
       0
     ],
-    "commits_last_7_days": 30,
+    "commits_last_7_days": 28,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 48,
@@ -64,7 +64,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-22 05:06 IST"
+  "updated": "2026-11-22 09:00 IST"
 }
 ```
 -->
