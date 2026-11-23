@@ -1,13 +1,13 @@
-![Live status](assets/status-20261123-0128.svg)
+![Live status](assets/status-20261123-0607.svg)
 
 <!--
 ```json
 {
-  "status": "having a chai without sugar",
+  "status": "at the gym",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "22°C",
-    "condition": "Clear"
+    "temperature": "20°C",
+    "condition": "Smoky haze"
   },
   "github": {
     "top_languages": [
@@ -61,7 +61,7 @@
       1,
       0
     ],
-    "commits_last_7_days": 28,
+    "commits_last_7_days": 5,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 48,
@@ -71,7 +71,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-23 01:28 IST"
+  "updated": "2026-11-23 06:07 IST"
 }
 ```
 -->
