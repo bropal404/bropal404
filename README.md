@@ -1,4 +1,4 @@
-![Live status](assets/status-20261125-1442.svg)
+![Live status](assets/status-20261125-1448.svg)
 
 <!--
 ```json
@@ -7,7 +7,8 @@
   "weather": {
     "location": "Hyderabad",
     "temperature": "28°C",
-    "condition": "Light rain shower"
+    "condition": "Light rain shower",
+    "icon": "rain"
   },
   "github": {
     "top_languages": [
@@ -25,10 +26,13 @@
       "TypeScript": 0.5
     },
     "latest_active_repo": "dotfiles",
-    "last_commit": "2026-11-24T14:23:49Z",
+    "last_commit": "2026-11-24T14:23:50Z",
     "last_commit_message": "Revise README formatting",
+    "last_commit_branch": "main",
+    "last_commit_sha": "9ad0b4c",
     "current_streak": 5,
     "longest_streak": 12,
+    "contributions_1y": 403,
     "daily_contributions_30d": [
       0,
       3,
@@ -59,11 +63,12 @@
       1,
       1,
       5,
-      4
+      5
     ],
     "commits_last_7_days": 13,
     "open_issues": 0,
     "open_prs": 4,
+    "merged_prs": 50,
     "total_repos": 48,
     "total_stars": 9,
     "most_starred_repo": {
@@ -71,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-25 14:42 IST"
+  "updated": "2026-11-25 14:48 IST"
 }
 ```
 -->
