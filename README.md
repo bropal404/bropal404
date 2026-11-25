@@ -1,12 +1,12 @@
-![Live status](assets/status-20261125-1448.svg)
+![Live status](assets/status-20261126-0106.svg)
 
 <!--
 ```json
 {
-  "status": "biriyani time",
+  "status": "having a chai without sugar",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "28°C",
+    "temperature": "22°C",
     "condition": "Light rain shower",
     "icon": "rain"
   },
@@ -19,22 +19,21 @@
       "TypeScript"
     ],
     "language_share": {
-      "Jupyter Notebook": 89.0,
+      "Jupyter Notebook": 88.9,
       "Python": 6.4,
       "C": 1.4,
       "JavaScript": 0.6,
       "TypeScript": 0.5
     },
     "latest_active_repo": "dotfiles",
-    "last_commit": "2026-11-24T14:23:50Z",
-    "last_commit_message": "Revise README formatting",
+    "last_commit": "2026-11-24T14:09:54Z",
+    "last_commit_message": "Fix incorrect 'custom build' claim in README/installer warning",
     "last_commit_branch": "main",
-    "last_commit_sha": "9ad0b4c",
-    "current_streak": 5,
+    "last_commit_sha": "8ae419e",
+    "current_streak": 0,
     "longest_streak": 12,
     "contributions_1y": 403,
     "daily_contributions_30d": [
-      0,
       3,
       0,
       2,
@@ -63,7 +62,8 @@
       1,
       1,
       5,
-      5
+      5,
+      0
     ],
     "commits_last_7_days": 13,
     "open_issues": 0,
@@ -76,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-25 14:48 IST"
+  "updated": "2026-11-26 01:06 IST"
 }
 ```
 -->
