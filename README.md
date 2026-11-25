@@ -1,12 +1,12 @@
-![Live status](assets/status-20261124-2108.svg)
+![Live status](assets/status-20261125-0538.svg)
 
 <!--
 ```json
 {
-  "status": "struggling with a deadline",
+  "status": "am I dreaming",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "26°C",
+    "temperature": "22°C",
     "condition": "Partly Cloudy"
   },
   "github": {
@@ -27,10 +27,9 @@
     "latest_active_repo": "dotfiles",
     "last_commit": "2026-11-24T14:23:49Z",
     "last_commit_message": null,
-    "current_streak": 4,
+    "current_streak": 0,
     "longest_streak": 12,
     "daily_contributions_30d": [
-      1,
       0,
       3,
       0,
@@ -59,9 +58,10 @@
       3,
       1,
       1,
-      5
+      5,
+      0
     ],
-    "commits_last_7_days": 11,
+    "commits_last_7_days": 9,
     "open_issues": 0,
     "open_prs": 4,
     "total_repos": 48,
@@ -71,7 +71,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-24 21:08 IST"
+  "updated": "2026-11-25 05:38 IST"
 }
 ```
 -->
