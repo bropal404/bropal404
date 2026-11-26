@@ -1,12 +1,12 @@
-![Live status](assets/status-20261126-0759.svg)
+![Live status](assets/status-20261126-1436.svg)
 
 <!--
 ```json
 {
-  "status": "at the gym",
+  "status": "biriyani time",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "22°C",
+    "temperature": "29°C",
     "condition": "Patchy rain nearby",
     "icon": "rain"
   },
@@ -26,13 +26,13 @@
       "TypeScript": 0.5
     },
     "latest_active_repo": "dotfiles",
-    "last_commit": "2026-11-24T14:09:54Z",
-    "last_commit_message": "Fix incorrect 'custom build' claim in README/installer warning",
+    "last_commit": "2026-11-24T14:09:29Z",
+    "last_commit_message": "Restructure as dotfiles: Dune Hyprland + Quickshell desktop",
     "last_commit_branch": "main",
-    "last_commit_sha": "8ae419e",
-    "current_streak": 0,
+    "last_commit_sha": "697376e",
+    "current_streak": 6,
     "longest_streak": 12,
-    "contributions_1y": 403,
+    "contributions_1y": 405,
     "daily_contributions_30d": [
       3,
       0,
@@ -63,9 +63,9 @@
       1,
       5,
       5,
-      0
+      2
     ],
-    "commits_last_7_days": 13,
+    "commits_last_7_days": 14,
     "open_issues": 0,
     "open_prs": 4,
     "merged_prs": 50,
@@ -76,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-26 07:59 IST"
+  "updated": "2026-11-26 14:36 IST"
 }
 ```
 -->
