@@ -1,13 +1,13 @@
-![Live status](assets/status-20261126-0106.svg)
+![Live status](assets/status-20261126-0759.svg)
 
 <!--
 ```json
 {
-  "status": "having a chai without sugar",
+  "status": "at the gym",
   "weather": {
     "location": "Hyderabad",
     "temperature": "22°C",
-    "condition": "Light rain shower",
+    "condition": "Patchy rain nearby",
     "icon": "rain"
   },
   "github": {
@@ -76,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-26 01:06 IST"
+  "updated": "2026-11-26 07:59 IST"
 }
 ```
 -->
