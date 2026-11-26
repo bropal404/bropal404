@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Refresh README.md with a live status card (assets/status-*.svg).
+# Refresh README.md with a live status card (assets/status-*.svg).
 
-Quiet, Apple-style layout: a typed "now" headline, the latest push, five
-readouts, and a Screen-Time-like activity panel whose bars are coloured by
-intensity (blue, green, yellow, red as a day nears the 30-day peak).
-Motion: an iOS-style spinner hands off to content that blurs into focus, the
-headline types itself with a soft blinking caret, and the activity panel is
-frosted "liquid glass" over a slowly drifting Google-coloured glow.
-Run with --test to render sample data into ./test-out/ without a token.
-"""
+# Quiet, Apple-style layout: a typed "now" headline, the latest push, five
+# readouts, and a Screen-Time-like activity panel whose bars are coloured by
+# intensity (blue, green, yellow, red as a day nears the 30-day peak).
+# Motion: an iOS-style spinner hands off to content that blurs into focus, the
+# headline types itself with a soft blinking caret, and the activity panel is
+# frosted "liquid glass" over a slowly drifting Google-coloured glow.
+# Run with --test to render sample data into ./test-out/ without a token.
+
+
 
 import argparse
 import json
@@ -473,23 +474,26 @@ def fmt(value, suffix=""):
 STYLE = """<style>
 @@FONTS@@
 :root { --bg:#ffffff; --ink:#1d1d1f; --mute:#6e6e73; --faint:#aeaeb2; --grid:rgba(60,60,67,.12);
-        --glass:rgba(250,250,252,.62); --glow:.5; --sheen:.55; --load:@@LOAD@@s;
+        --glass:rgba(250,250,252,.62); --glow:.5; --load:@@LOAD@@s;
         --blue:#4285f4; --red:#ea4335; --yellow:#fbbc04; --green:#34a853; }
 @media (prefers-color-scheme: dark) {
   :root { --bg:#000000; --ink:#f5f5f7; --mute:#98989d; --faint:#636366; --grid:rgba(235,235,245,.1);
-          --glass:rgba(28,28,30,.58); --glow:.55; --sheen:.14;
+          --glass:rgba(28,28,30,.58); --glow:.55;
           --blue:#8ab4f8; --red:#f28b82; --yellow:#fdd663; --green:#81c995; }
   .r0 { stop-opacity:.28; } .r1 { stop-opacity:.03; } .r2 { stop-opacity:.12; }
 }
 text   { fill:var(--ink); font-family:'Inter', -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, Arial, sans-serif; }
 .bg    { fill:var(--bg); }
 .glass { fill:var(--glass); }
-.r0, .r1, .r2, .sh { stop-color:#ffffff; }
+.r0, .r1, .r2 { stop-color:#ffffff; }
 .r0 { stop-opacity:.95; } .r1 { stop-opacity:.2; } .r2 { stop-opacity:.7; }
 .glow  { opacity:0; animation: glowin 1.6s ease-out var(--load) forwards; }
 .spoke { fill:var(--mute); }
 .cover { fill:var(--bg); }
 .grid  { stroke:var(--grid); stroke-width:1; }
+.avg   { stroke:var(--mute); stroke-width:1.2; stroke-dasharray:3 3; opacity:.7; }
+.nil   { fill:var(--grid); }
+.val   { font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
 .name  { font-size:17px; font-weight:600; letter-spacing:-.3px; }
 .label { font-size:13px; font-weight:600; fill:var(--mute); letter-spacing:-.1px; }
 .sub   { font-size:15px; fill:var(--mute); letter-spacing:-.2px; }
@@ -508,14 +512,13 @@ text   { fill:var(--ink); font-family:'Inter', -apple-system, 'SF Pro Text', 'Se
 .blue { fill:var(--blue); } .red { fill:var(--red); }
 .yellow { fill:var(--yellow); } .green { fill:var(--green); }
 
-/* ---- motion: spinner, then content blurs in; ambient glow, sheen, pulse, caret ---- */
+/* ---- motion: spinner, then content blurs in; ambient glow, pulse, caret ---- */
 .in     { animation: in .9s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d, 0s) + var(--load)); }
-.bar    { transform-box: fill-box; transform-origin: 50% 100%; animation: grow 1s cubic-bezier(.2,.9,.25,1) both;
+.bar    { transform-box: fill-box; transform-origin: 50% 100%; animation: grow .9s cubic-bezier(.34,1.35,.64,1) both;
           animation-delay: calc(var(--d, 0s) + var(--load)); }
 .loader { transform-box: fill-box; transform-origin: center; animation: loadout .45s ease-in calc(var(--load) - .35s) both; }
 .spoke  { animation: fade 1s linear infinite; }
 .drift  { animation: drift var(--t, 14s) ease-in-out infinite alternate; }
-.sheen  { animation: sheen 9s cubic-bezier(.4,0,.2,1) calc(var(--load) + 1.6s) infinite both; }
 .pulse  { transform-box: fill-box; transform-origin: center; animation: pulse 2.4s ease-out infinite; }
 .cover  { transform-origin: @@ORIGIN@@px 0px; animation: reveal @@DUR@@s linear @@DELAY@@s both; }
 .cursor { animation: slide @@DUR@@s linear @@DELAY@@s both, blink 1.2s ease-in-out @@AFTER@@s infinite; }
@@ -525,7 +528,6 @@ text   { fill:var(--ink); font-family:'Inter', -apple-system, 'SF Pro Text', 'Se
 @keyframes fade   { from { opacity:1 } to { opacity:.15 } }
 @keyframes glowin { to { opacity:var(--glow) } }
 @keyframes drift  { to { transform: translate(var(--dx), var(--dy)) } }
-@keyframes sheen  { 0% { transform: translateX(0); opacity:0 } 6% { opacity:1 } 30%, 100% { transform: translateX(@@SHEEN@@px); opacity:0 } }
 @keyframes grow   { from { transform: scaleY(0) } to { transform: scaleY(1) } }
 @keyframes pulse  { from { transform: scale(1); opacity:.5 } to { transform: scale(3); opacity:0 } }
 @keyframes blink  { 0%, 35% { opacity:1 } 50%, 85% { opacity:0 } 100% { opacity:1 } }
@@ -536,7 +538,7 @@ text   { fill:var(--ink); font-family:'Inter', -apple-system, 'SF Pro Text', 'Se
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; }
-  .cover, .cursor, .pulse, .loader, .sheen { display:none; }
+  .cover, .cursor, .pulse, .loader { display:none; }
   .glow { opacity:var(--glow); }
 }
 </style>"""
@@ -742,6 +744,16 @@ def render_stats(gh):
     return out
 
 
+def bar_path(x, w, h, base):
+    """A bar with rounded top corners sitting flat on the baseline."""
+    r = min(4.0, w / 2, h)
+    top = base - h
+    return (
+        f"M{x:.1f},{base}V{top + r:.1f}a{r:.1f},{r:.1f} 0 0 1 {r:.1f},{-r:.1f}"
+        f"h{w - 2 * r:.1f}a{r:.1f},{r:.1f} 0 0 1 {r:.1f},{r:.1f}V{base}z"
+    )
+
+
 def render_chart(daily, today):
     """Activity panel: 30 days of contributions, bars coloured by intensity."""
     x, y, w, h = PANEL
@@ -749,8 +761,6 @@ def render_chart(daily, today):
     out = (
         '<g class="in" style="--d:.6s">'
         + glass(x, y, w, h, 22)
-        + f'<g clip-path="url(#pane)"><rect x="{x - 220}" y="{y}" width="200" height="{h}" '
-        'fill="url(#sheen)" class="sheen" transform="skewX(-18)"/></g>'
         + f'<text x="{x + 24}" y="{y + 36}" class="title">Activity</text>'
     )
     if not daily:
@@ -771,15 +781,19 @@ def render_chart(daily, today):
         out += f'<rect x="{lx:.1f}" y="{y + 27}" width="11" height="11" rx="3" class="{hue}"/>'
     out += f'<text x="{lx - 6:.1f}" y="{y + 36}" class="tiny" text-anchor="end">Less</text>'
 
-    # Three quiet gridlines with values on the right, like Screen Time.
-    for frac in (1, 0.5, 0):
+    # Peak and zero gridlines, plus a dashed average line, like Screen Time.
+    for frac in (1, 0):
         gy = BAR_BASE - BAR_H * frac
-        val = peak * frac
-        val = int(val) if val == int(val) else f"{val:.1f}"
         out += (
             f'<line x1="{PLOT_X0}" y1="{gy:.1f}" x2="{PLOT_X1}" y2="{gy:.1f}" class="grid"/>'
-            f'<text x="{PLOT_X1 + 10}" y="{gy + 4:.1f}" class="tiny">{val}</text>'
+            f'<text x="{PLOT_X1 + 10}" y="{gy + 4:.1f}" class="tiny">{round(peak * frac)}</text>'
         )
+    avg = sum(daily) / n
+    ay = BAR_BASE - BAR_H * avg / (peak or 1)
+    if avg:
+        out += f'<line x1="{PLOT_X0}" y1="{ay:.1f}" x2="{PLOT_X1}" y2="{ay:.1f}" class="avg"/>'
+        if BAR_BASE - BAR_H + 12 < ay < BAR_BASE - 12:  # keep clear of the peak and zero labels
+            out += f'<text x="{PLOT_X1 + 10}" y="{ay + 4:.1f}" class="tiny">avg</text>'
 
     # Weekly date labels counted back from today.
     slot = (PLOT_X1 - PLOT_X0) / n
@@ -792,16 +806,30 @@ def render_chart(daily, today):
         )
     out += "</g>"
 
-    bw = slot * 0.56
+    bw = slot * 0.5
     for i, count in enumerate(daily):
-        if not count:
-            continue
-        bh = max(bw, BAR_H * count / (peak or 1))
         bx = PLOT_X0 + i * slot + (slot - bw) / 2
+        if not count:  # empty day: a small dot on the baseline
+            out += f'<circle cx="{bx + bw / 2:.1f}" cy="{BAR_BASE - 2}" r="1.6" class="nil"/>'
+            continue
+        bh = max(6, BAR_H * count / (peak or 1))
         out += (
-            f'<rect x="{bx:.1f}" y="{BAR_BASE - bh:.1f}" width="{bw:.1f}" height="{bh:.1f}" '
-            f'rx="{bw / 2:.1f}" class="{level(count, peak)} bar" style="--d:{0.8 + i * 0.03:.2f}s"/>'
+            f'<path d="{bar_path(bx, bw, bh, BAR_BASE)}" fill="url(#g-{level(count, peak)})" '
+            f'class="bar" style="--d:{0.8 + i * 0.03:.2f}s"/>'
         )
+
+    # Today's value in a small glass bubble above its bar, like a selected bar in Health.
+    last = daily[-1]
+    cx = PLOT_X0 + (n - 0.5) * slot
+    top = BAR_BASE - (max(6, BAR_H * last / (peak or 1)) if last else 4)
+    label = str(last)
+    bw2 = text_width(label, 12, True) + 18
+    by = top - 30
+    out += (
+        f'<g class="in" style="--d:{0.8 + n * 0.03 + 0.4:.2f}s">'
+        + glass(cx - bw2 / 2, round(by), bw2, 22, 11, shadow=False)
+        + f'<text x="{cx:.1f}" y="{round(by) + 15}" class="val" text-anchor="middle">{label}</text></g>'
+    )
     return out
 
 
@@ -813,8 +841,7 @@ def render_svg(data):
         today = datetime.now(IST)
 
     typed, tokens = render_status(data["status"].strip())
-    x, y, w, h = PANEL
-    tokens.update({"FONTS": font_face_css(), "LOAD": str(LOAD), "SHEEN": str(w + 420)})
+    tokens.update({"FONTS": font_face_css(), "LOAD": str(LOAD)})
     style = STYLE
     for key, value in tokens.items():
         style = style.replace(f"@@{key}@@", value)
@@ -826,12 +853,13 @@ def render_svg(data):
         '<feDropShadow dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".08"/></filter>'
         '<linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">'
         '<stop offset="0" class="r0"/><stop offset=".5" class="r1"/><stop offset="1" class="r2"/></linearGradient>'
-        '<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">'
-        '<stop offset="0" class="sh" stop-opacity="0"/>'
-        '<stop offset=".5" class="sh" style="stop-opacity:var(--sheen)"/>'
-        '<stop offset="1" class="sh" stop-opacity="0"/></linearGradient>'
-        f'<clipPath id="card"><rect width="{W}" height="{H}" rx="24"/></clipPath>'
-        f'<clipPath id="pane"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="22"/></clipPath>'
+        + "".join(  # vertical fade per bar colour, solid at the top like Apple Health
+            f'<linearGradient id="g-{hue}" x1="0" y1="0" x2="0" y2="1">'
+            f'<stop offset="0" style="stop-color:var(--{hue})"/>'
+            f'<stop offset="1" style="stop-color:var(--{hue});stop-opacity:.62"/></linearGradient>'
+            for _, hue in LEVELS
+        )
+        + f'<clipPath id="card"><rect width="{W}" height="{H}" rx="24"/></clipPath>'
         "</defs>"
     )
     body = (
