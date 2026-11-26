@@ -1,9 +1,9 @@
-![Live status](assets/status-20261126-1436.svg)
+![Live status](assets/status-20261126-1700.svg)
 
 <!--
 ```json
 {
-  "status": "biriyani time",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
     "temperature": "29°C",
@@ -76,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-26 14:36 IST"
+  "updated": "2026-11-26 17:00 IST"
 }
 ```
 -->
