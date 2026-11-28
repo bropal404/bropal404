@@ -1,14 +1,14 @@
-![Live status](assets/status-20261128-0947.svg)
+![Live status](assets/status-20261128-1909.svg)
 
 <!--
 ```json
 {
-  "status": "good morning, time to ship",
+  "status": "debugging arc",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "23°C",
-    "condition": "Sunny",
-    "icon": "sun"
+    "temperature": "24°C",
+    "condition": "Clear",
+    "icon": "moon"
   },
   "github": {
     "top_languages": [
@@ -26,10 +26,10 @@
       "TypeScript": 0.5
     },
     "latest_active_repo": "dotfiles",
-    "last_commit": "2026-11-26T08:43:54Z",
-    "last_commit_message": "Floating-only cascade + window dock, docked bar, compact quick settings; refresh README and screenshots",
+    "last_commit": "2026-11-27T15:48:48Z",
+    "last_commit_message": "3-finger pinch toggles fullscreen; cascade windows at 1200x700",
     "last_commit_branch": "main",
-    "last_commit_sha": "5f11df5",
+    "last_commit_sha": "f2e9d39",
     "current_streak": 8,
     "longest_streak": 12,
     "contributions_1y": 407,
@@ -76,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-28 09:47 IST"
+  "updated": "2026-11-28 19:09 IST"
 }
 ```
 -->
