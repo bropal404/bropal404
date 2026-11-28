@@ -1,14 +1,14 @@
-![Live status](assets/status-20261128-0351.svg)
+![Live status](assets/status-20261128-0947.svg)
 
 <!--
 ```json
 {
-  "status": "am I dreaming",
+  "status": "good morning, time to ship",
   "weather": {
     "location": "Hyderabad",
-    "temperature": "21°C",
-    "condition": "Smoky haze",
-    "icon": "fog"
+    "temperature": "23°C",
+    "condition": "Sunny",
+    "icon": "sun"
   },
   "github": {
     "top_languages": [
@@ -30,9 +30,9 @@
     "last_commit_message": "Floating-only cascade + window dock, docked bar, compact quick settings; refresh README and screenshots",
     "last_commit_branch": "main",
     "last_commit_sha": "5f11df5",
-    "current_streak": 0,
+    "current_streak": 8,
     "longest_streak": 12,
-    "contributions_1y": 406,
+    "contributions_1y": 407,
     "daily_contributions_30d": [
       2,
       11,
@@ -63,9 +63,9 @@
       5,
       2,
       1,
-      0
+      1
     ],
-    "commits_last_7_days": 15,
+    "commits_last_7_days": 16,
     "open_issues": 0,
     "open_prs": 4,
     "merged_prs": 50,
@@ -76,7 +76,7 @@
       "stars": 1
     }
   },
-  "updated": "2026-11-28 03:51 IST"
+  "updated": "2026-11-28 09:47 IST"
 }
 ```
 -->
